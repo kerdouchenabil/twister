@@ -71,7 +71,7 @@ function init(db) {
     });
 
     router
-        .route("/user/:user_id(\\d+)")
+        .route("/user/:user_id(\\d+)") //regex: y'a rien après
         .get(async (req, res) => {
         try {
             const user = await users.get(req.params.user_id);
@@ -86,7 +86,7 @@ function init(db) {
     })
         .delete((req, res, next) => res.send(`delete user ${req.params.user_id}`));
 
-    router.put("/user", (req, res) => {
+    router.post("/user", (req, res) => { //.post ?
         const { login, password, lastname, firstname } = req.body;
         if (!login || !password || !lastname || !firstname) {
             res.status(400).send("Missing fields");
@@ -96,6 +96,60 @@ function init(db) {
                 .catch((err) => res.status(500).send(err));
         }
     });
+
+    //--------------------------
+
+    //logout service
+    router.delete("/user/logout", async (req, res) => {
+        try {
+            const { user_id } = req.body;
+            //erreur ?
+            if(!user_id){
+                res.status(400).json({
+                    status: 400,
+                    "message": "Requete invalide : user_id nécessaire"
+                });
+                return;
+            }
+            //user_id n'existe pas? 
+            if(! await users.exists(user_id)) {
+                res.status(401).json({
+                    status: 401,
+                    message: "Utilisateur inconnu"
+                });
+                return;
+            }
+            //est ce qu'il est conecté? non
+            if(! (req.session.user_id === user_id)  ){ //ou == pour alléger
+                res.status(400).json({
+                    status: 400,
+                    "message": "Utilisateur non connecté"
+                });
+                return;
+            }
+            //user_id valide et connecté -> on le deconnecte
+            req.session.disconnect();
+            res.status(201).json({
+                status: 201,
+                message: "déconnexion réussie"
+            })
+            return;
+
+        } catch (error) {
+            // Toute autre erreur
+            res.status(500).json({
+                status: 500,
+                message: "erreur interne",
+                details: (e || "Erreur inconnue").toString()
+            });
+        }
+    });
+
+
+    //ajout d'un ami 
+    router.post("user/add",)
+
+    //--------------------------
 
     return router;
 }

@@ -1,0 +1,6 @@
+installer les modules:
+npm install mocha chai chai-http express express-session path
+
+
+codes HTTP :
+https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP

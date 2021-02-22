@@ -14,7 +14,7 @@ app.use(session({
     secret: "technoweb rocks"
 }));
 
-app.use('/api', api.default());
+app.use('/api', api.default()); //dabord /api pui api/default...
 
 // Démarre le serveur
 app.on('close', () => {
