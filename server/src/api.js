@@ -147,7 +147,39 @@ function init(db) {
 
 
     //ajout d'un ami 
-    router.post("user/add",)
+    router.post("user/add", async(req, res) =>{
+        try{
+            const{ user_id } = req.body;
+            // if id incorrect
+            if( ! user_id ){
+                res.status(500).json({
+                    status: 500,
+                    "message": "Requete invalide : user_id invalide"
+                });
+                return;
+            }
+
+            // si user_id n'existe pas 
+            if(! await users.exists(user_id)) {
+                res.status(400).json({
+                    status: 400,
+                    message: "Utilisateur introuvable"
+                });
+                return;
+            }
+
+            // ajouter un ami. methode add_friend dans users.js ? ou creation friend.js ?
+            //
+
+        } catch (error) {
+            // Toute autre erreur
+            res.status(500).json({
+                status: 500,
+                message: "erreur interne",
+                details: (e || "Erreur inconnue").toString()
+            });
+        }
+    })
 
     //--------------------------
 
