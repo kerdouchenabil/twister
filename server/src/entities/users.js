@@ -1,41 +1,51 @@
+
 class Users {
   constructor(db) {
     this.db = db
-    // suite plus tard avec la BD
+    // suite avec la BD
+    // voir si besoin d'importer sqlite
+    //console.log(db)
+    this.db.exec(`CREATE TABLE IF NOT EXISTS users (
+      login VARCHAR(512) NOT NULL PRIMARY KEY,
+      password VARCHAR(256) NOT NULL,
+      lastname VARCHAR(256) NOT NULL,
+      firstname VARCHAR(256) NOT NULL
+    );`)
+
+
+    //creation user //
+    //id = this.create(1,"1234","lastname","firstname")
   }
 
+
   create(login, password, lastname, firstname) {
+    let _this = this
+    
     return new Promise((resolve, reject) => {
-      let userid = 1; // À remplacer par une requête bd
-      if(false) {
-        //erreur
-        reject();
-      } else {
-        resolve(userid);
-      }
+      var st = _this.db.prepare("INSERT INTO users VALUES (?,?,?,?)")
+      st.run([login, password, lastname, firstname], function(err, res){
+        if(err){
+          reject(err)
+        }else{
+          resolve(this.lastID)
+        }
+      })
     });
   }
 
   get(userid) {
-    return new Promise((resolve, reject) => {
-      const user = {
-         login: "pikachu",
-         password: "1234",
-         lastname: "chu",
-         firstname: "pika"
-      }; // À remplacer par une requête bd
 
-      if(false) {
-        //erreur
-        reject();
-      } else {
-        if(userid == 1) {
-          resolve(user);
-        } else {
-          resolve(null);
+    return new Promise((resolve, reject) => {
+
+      var st = db.prepare("SELECT * FROM users WHERE rowid = ?")
+      st.get([userid], function(err, res){
+        if(err){
+          reject(err)
+        }else{
+          resolve(res)
         }
-      }
-    });
+      })
+     });
   }
 
   async exists(login) {
@@ -50,15 +60,18 @@ class Users {
   }
 
   checkpassword(login, password) {
+
     return new Promise((resolve, reject) => {
-      let userid = 1; // À remplacer par une requête bd
-      if(false) {
-        //erreur
-        reject();
-      } else {
-        resolve(userid);
-      }
-    });
+
+      var st = db.prepare("SELECT rowid as userid FROM users WHERE login = ? AND password = ?")
+      st.get([login, password], function(err, res){
+        if(err){
+          reject(err)
+        }else{
+          resolve(res.userid)
+        }
+      })
+     });
   }
 
 }

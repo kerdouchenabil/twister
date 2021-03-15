@@ -19,7 +19,7 @@ mocha.describe("Test de l'API user", () => {
         };
 
         request
-            .post('/api/user') //put ko??
+            .post('/api_users/user') //put ko??
             .send(user)
 
             .then((res) => {
@@ -27,14 +27,14 @@ mocha.describe("Test de l'API user", () => {
                 console.log(`Retrieving user ${res.body.id}`)
                 return Promise.all([
                     request
-                        .get(`/api/user/${res.body.id}`)
+                        .get(`/api_users/user/${res.body.id}`)
                         .then((res) => {
                             res.should.have.status(200)
                             chai.assert.deepEqual(res.body, user)
                         }),
 
                     request
-                        .get(`/api/user/4`)
+                        .get(`/api_users/user/4`)
                         .then((res) => {
                             res.should.have.status(404)
                         }),

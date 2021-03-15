@@ -1,6 +1,9 @@
 installer les modules:
 npm install mocha chai chai-http express express-session path
 
+npm install sqlite3
+
+npm install nedb
 
 codes HTTP :
 https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP
