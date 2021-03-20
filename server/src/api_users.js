@@ -12,23 +12,22 @@ function init(db) {
         console.log('Body', req.body);
         next();
     });
-    //console.log(db)///////////////////////////
     const users = new Users.default(db);
     router.post("/user/login", async (req, res) => {
         try {
             const { login, password } = req.body;
             // Erreur sur la requête HTTP
             if (!login || !password) {
-                res.status(400).json({
-                    status: 400,
+                res.status(401).json({
+                    status: 401, //facultatif
                     "message": "Requête invalide : login et password nécessaires"
                 });
                 return;
             }
             if(! await users.exists(login)) {
-                res.status(401).json({
-                    status: 401,
-                    message: "Utilisateur inconnu"
+                res.status(400).json({
+                    status: 400,
+                    message: "User not found"
                 });
                 return;
             }
@@ -70,27 +69,33 @@ function init(db) {
             });
         }
     });
-
+    
+    //get user by id
     router
-        .route("/user/:user_id(\\d+)") //regex: y'a rien après
+        .route("/user/:user_id(\\d+)")
         .get(async (req, res) => {
         try {
             const user = await users.get(req.params.user_id);
             if (!user)
                 res.sendStatus(404);
             else
-                res.send(user);
+                res.status(201).send(user)
         }
         catch (e) {
             res.status(500).send(e);
         }
     })
-        .delete((req, res, next) => res.send(`delete user ${req.params.user_id}`));
 
-    router.post("/user", (req, res) => { //.post ?
+    .delete((req, res, next) => res.send(`delete user ${req.params.user_id}`));
+
+    //create user
+    router.post("/user", (req, res) => {
         const { login, password, lastname, firstname } = req.body;
+        
+        //console.log("req.body= "+JSON.stringify(req.body)) ///////test
+
         if (!login || !password || !lastname || !firstname) {
-            res.status(400).send("Missing fields");
+            res.status(400).send("create user: Missing fields");
         } else {
             users.create(login, password, lastname, firstname)
                 .then((user_id) => res.status(201).send({ id: user_id }))
@@ -98,9 +103,9 @@ function init(db) {
         }
     });
 
-    //--------------------------
 
-    //logout service
+    //------------- logout ------------
+    //logout service à vérifier !
     router.delete("/user/logout", async (req, res) => {
         try {
             const { user_id } = req.body;
@@ -145,49 +150,9 @@ function init(db) {
             });
         }
     });
-
-
-    //ajout d'un ami 
-    router.post("user/add", async(req, res) =>{
-        try{
-            const{ user_id } = req.body;
-            // if id incorrect
-            if( ! user_id ){
-                res.status(500).json({
-                    status: 500,
-                    "message": "Requete invalide : user_id invalide"
-                });
-                return;
-            }
-
-            // si user_id n'existe pas 
-            if(! await users.exists(user_id)) {
-                res.status(400).json({
-                    status: 400,
-                    message: "Utilisateur introuvable"
-                });
-                return;
-            }
-
-            // ajouter un ami. methode add_friend dans users.js ? ou creation friend.js ?
-            //
-
-        } catch (error) {
-            // Toute autre erreur
-            res.status(500).json({
-                status: 500,
-                message: "erreur interne",
-                details: (e || "Erreur inconnue").toString()
-            });
-        }
-    })
-
-    //--------------------------
-
     
-    console.log("- init va bien -")
+
     return router;
 }
 exports.default = init;
 
-//console.log("- tout va bien -")
