@@ -1,0 +1,35 @@
+h1 {
+    text-align: center;
+    
+    color :rgba(0, 174, 255, 0.692);
+}
+main{
+    display : flex;
+    justify-content:center;
+
+    
+}
+div{
+    display : flex; 
+    flex-direction: column;
+}
+.button{
+    width:150px;
+    line-height:50px;
+    text-align:center;
+    vertical-align:middle;
+    color :rgb(255, 255, 255);
+    background-color : rgba(0, 174, 255, 0.692)
+    
+
+
+}
+.button:hover{
+
+     cursor:pointer;
+    background-color:rgb(118, 176, 214);
+}
+
+.id{
+    text-decoration-color: rgba(0, 174, 255, 0.692);
+}

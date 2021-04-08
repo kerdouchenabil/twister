@@ -3,13 +3,18 @@ npm install mocha chai chai-http express express-session path
 npm install sqlite3
 npm install nedb
 
+npm install -g create-react-app
+
 ---
+
+#lancer le serveur (dans le dossier server)
+npm run serve
+
+#lancer le client (dans le dossier client)
+npm start
 
 #lancer les tests:
 npm run test 
-
-#lancer le serveur
-npm run serve  
 
 ---
 
@@ -18,9 +23,10 @@ https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP
 
 ---
 
-#curl :
--add user :
-curl -v -X PUT -H "Content-Type: application/json" -d '{"login":"pikachu99","password":"1234", "lastname":"chu", "firstname":"pika"}' http://localhost:4000/api/user
+#test avec curl :
+add user :
+
+curl -v -X PUT -H "Content-Type: application/json" -d '{"login":"clinton","password":"1234", "lastname":"kerdouche", "firstname":"nabil"}' http://localhost:4000/api/user
 
 
 
