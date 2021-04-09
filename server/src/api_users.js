@@ -1,5 +1,6 @@
 const express = require("express");
 const Users = require("./entities/users.js");
+const session = require("express-session") // ?
 
 function init(db) {
     const router = express.Router();
@@ -46,6 +47,11 @@ function init(db) {
                     else {
                         // C'est bon, nouvelle session créée
                         req.session.userid = userid;
+                        /*
+                        console.log("-->session_id=", req.session.id)
+                        console.log("-->session_userid=", req.session.userid)
+                        console.log("-->session", req.session)
+                        */
                         res.status(200).json({
                             status: 200,
                             message: "Login et mot de passe accepté"

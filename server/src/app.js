@@ -17,12 +17,24 @@ const session = require("express-session");
 api_2 = require("./api_friends.js");////////////
 
 app.use(session({
-    secret: "technoweb rocks"
+    secret: "technoweb rocks" // a changer !
 }));
 
 app.use('/api', api.default(db)); //on passe la db
 app.use('/api', api_friends.default(db)); //on passe la db
 
+// mongo DB
+const Datastore = require("nedb")
+db_nosql = new Datastore("db1.db")
+db_nosql.loadDatabase()
+
+//const fullDate = Date()
+//console.log(fullDate)
+//db_nosql.insert(fullDate)
+
+console.log(db_nosql) /// test
+
+//
 // Démarre le serveur
 app.on('close', () => {
 });
