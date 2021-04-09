@@ -7,7 +7,7 @@ class Friends {
 
     }
 
-    add(id_from, id_to) {
+    async add(id_from, id_to) { //async ? 
         let _this = this
         return new Promise((resolve, reject) => {
           const st = _this.db.prepare("INSERT INTO friends VALUES (?,?)")
@@ -18,6 +18,33 @@ class Friends {
               resolve(this.lastID) //renvoi l'id de la ligne (id_from, id_to) créée
             }
           })
+        });
+      }
+      async delete(id_from,id_to){
+        let _this = this 
+        return new Promise((resolve,reject) => {
+          const st = _this.db.prepare("DELETE  FROM friends where id_from = ? and id_to = ?")
+          st.run([id_from, id_to],function(err, res){
+            if(err){
+              reject(err)
+            }else{
+              resolve(true)
+            }
+          })
+        });
+      }
+      async list_friends(id){
+        let _this = this
+        return new Promise((resolve,reject)=>{
+          const st = _this.db.prepare("SELECT u.lastname,u.firstname from friends f,users u  where f.id_from = ? and f.id_to = u.rowid ")
+          st.run(id,function(err,res){
+            if(err){
+              reject(err)
+            }else{
+              resolve(res)
+            }
+          })
+
         });
       }
 
