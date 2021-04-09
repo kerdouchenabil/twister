@@ -13,6 +13,8 @@ function init(db) {
         next();
     });
     const users = new Users.default(db);
+
+    //connexion
     router.post("/user/login", async (req, res) => {
         try {
             const { login, password } = req.body;

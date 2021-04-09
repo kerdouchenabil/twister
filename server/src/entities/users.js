@@ -126,15 +126,28 @@ class Users {
   checkpassword(login, password) {
 
     return new Promise((resolve, reject) => {
-
-      var st = this.db.prepare("SELECT rowid as userid FROM users WHERE login = ? AND password = ?")
-      st.get([login, password], function(err, res){
-        if(err){
-          reject(err)
-        }else{
-          resolve(res.userid)
-        }
-      })
+      try{
+        var st = this.db.prepare("SELECT rowid as userid FROM users WHERE login = ? AND password = ?")
+        st.get([login, password], function(err, res){
+          if(err){
+            reject(err)
+          }else{
+            if(! res){ //si pas de resultats
+              reject("non authentifié")
+              return;
+            }
+            resolve(res.userid)
+          }
+        })
+      
+      }catch(e){
+        res.status(500).json({
+          status: 500,
+          message: "erreur interne",
+          details: (e || "Erreur inconnue").toString()
+        });
+      }
+      
      });
   }
 
