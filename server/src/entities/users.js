@@ -108,6 +108,22 @@ class Users {
         }
       })
     });
+    
+  }
+
+
+  async exists_id(id) {
+    return new Promise((resolve, reject) => {
+      var st = this.db.prepare('SELECT id FROM users WHERE rowid = ?')
+      st.get([id], function(err, res){
+        if(err){
+          reject(false)
+        }else{
+          resolve(true)
+        }
+      })
+    });
+    
   }
 
   /*

@@ -3,7 +3,7 @@ const api = require('./api_users.js');
 const api_friends = require('./api_friends.js');
 
 const sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database(':memory:');
+let db = new sqlite3.Database('db0');
 
 // Détermine le répertoire de base
 const basedir = path.normalize(path.dirname(__dirname));
