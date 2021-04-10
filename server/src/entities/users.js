@@ -58,29 +58,8 @@ class Users {
       })
     });
   }
-  /*
-  get(userid) {
-    return new Promise((resolve, reject) => {
-      const user = {
-         login: "pikachu",
-         password: "1234",
-         lastname: "chu",
-         firstname: "pika"
-      }; // À remplacer par une requête bd
 
-      if(false) {
-        //erreur
-        reject();
-      } else {
-        if(userid == 1) {
-          resolve(user);
-        } else {
-          resolve(null);
-        }
-      }
-    });
-  }
-  */
+
   get(userid) {
 
     return new Promise((resolve, reject) => {
@@ -114,31 +93,19 @@ class Users {
 
   async exists_id(id) {
     return new Promise((resolve, reject) => {
-      var st = this.db.prepare('SELECT id FROM users WHERE rowid = ?')
+      var st = this.db.prepare('SELECT * FROM users WHERE rowid = ?')
       st.get([id], function(err, res){
-        if(err){
-          reject(false)
-        }else{
+        if(res){ // commencer par if(res), car res peut etre undefined !
           resolve(true)
+        }else{
+          reject(false)
         }
       })
     });
     
   }
 
-  /*
-  checkpassword(login, password) {
-    return new Promise((resolve, reject) => {
-      let userid = 1; // À remplacer par une requête bd
-      if(false) {
-        //erreur
-        reject();
-      } else {
-        resolve(userid);
-      }
-    });
-  }
-  */
+
   checkpassword(login, password) {
 
     return new Promise((resolve, reject) => {

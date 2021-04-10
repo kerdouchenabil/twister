@@ -18,10 +18,14 @@ const session = require("express-session");
 api_1 = require("./api_users.js");
 api_2 = require("./api_friends.js");////////////
 
+//stockage sessions dans bd serveur
+//var mongoose = require('mongoose'); //TODO
+
 app.use(session({
     secret: "abcdefghijklmnopqrstuvwxyz0123456789", // a changer
-    //resave: false,
-    //saveUninitialized: false
+    //cookie: { maxAge: 2628000000 },
+    resave: false,
+    //saveUninitialized: false,
 }));
 
 app.use('/api', (req, res, next) => {

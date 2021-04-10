@@ -22,9 +22,10 @@ function init(db) {
         .route("/friends/:user_id(\\d+)")
         .post(async (req, res) => {
             try{
+                
                 //const { id_to } = req.body; //id de l'ami à ajouter
-                console.log("user _ id ==", req.params.user_id)
                 const id_to  = req.params.user_id
+                console.log("id_to ==", id_to)
                 //console.log(`add friend: req.body= ${JSON.stringify(req.body)}`) ///////test
 
                 if (! id_to ) {
@@ -32,37 +33,45 @@ function init(db) {
                     return;
                 }
 
-                // TODO: récuperer l'id user de la session (cookies) //
-                id_from = 1 ////////////////////////////////////////////////////////////pour le moment
-                //
-                /*
-                if(! await users.exists(login)) { //creer une fonction exists avec id user
-                    res.status(400).json({
-                        //status: 400, //dupliquation !
-                        message: "User not found"
-                    });
+                // utilisateur connecté ?
+                if (! req.session.userid ) {
+                    res.status(401).json({message:"add friend: utilisateur non authentifié"});
                     return;
                 }
-                */
-                /*
-                if (  ) { //TODO verifier si utilisateur connecté
-                    res.status(400).send("User not connected");
+
+                // récuperer l'id user de la session
+                id_from = req.session.userid /// voir si suffisant (quand on aura  mongoose  pour les sessions)
+
+                console.log('api_friends: session id=', req.session.id, '  session.userid=', req.session.userid) // test
+                
+                // friend existe ?
+                try{
+                    if(! await users.exists_id(id_to)) { 
+                        res.status(400).json({
+                            //status: 400, //dupliquation !
+                            message: "api_friend: friend not found"
+                        });
+                        return;
+                    }
+                }catch(e){
+                    res.status(500).send("friend not found !")
                     return;
-                    
                 }
-                */
 
-                // verifié que le  user ne s'ajoute pas lui meme 
+                // verifier que le  user ne s'ajoute pas lui meme 
+                if(id_from == id_to){
+                    res.status(500).json("api_friend: on ne peut pas s'ajouter soi-même en ami !")
+                    return;
+                }
 
-               //TODO
-                await friends.add(id_from, id_to) //utiliser  x = await fonction... aulieu des .then 
+                friends.add(id_from, id_to) //utiliser  x = await fonction... aulieu des .then 
                     .then((added) => res.status(201).send({ id: added })) //pas la peine de retourner l'id, le status suffit
                     .catch((err) => res.status(500).send(err));
             } catch (error) {
                 // Toute autre erreur
                 res.status(500).json({
-                    status: 500,
-                    message: "erreur interne",
+                    //status: 500,
+                    message: "api_friend: erreur interne",
                     details: (error || "Erreur inconnue").toString()
                 })
             }

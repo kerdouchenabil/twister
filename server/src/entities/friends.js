@@ -7,19 +7,20 @@ class Friends {
 
     }
 
-    async add(id_from, id_to) { //async ? 
+    add(id_from, id_to) { //async ? 
         let _this = this
         return new Promise((resolve, reject) => {
           const st = _this.db.prepare("INSERT INTO friends VALUES (?,?)")
           st.run([id_from, id_to], function(err, res){
             if(err){
-              reject(err)
+              reject("can not add this friend !")
             }else{
               resolve(this.lastID) //renvoi l'id de la ligne (id_from, id_to) créée
             }
           })
         });
       }
+
       async delete(id_from,id_to){
         let _this = this 
         return new Promise((resolve,reject) => {

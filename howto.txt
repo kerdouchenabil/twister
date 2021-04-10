@@ -2,6 +2,8 @@
 npm install mocha chai chai-http express express-session path
 npm install sqlite3
 npm install nedb
+npm install express-sessions #mongoose
+npm install mongoose
 
 npm install -g create-react-app
 
