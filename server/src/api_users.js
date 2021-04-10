@@ -117,15 +117,17 @@ function init(db) {
     //logout service à vérifier !
     router.delete("/user/logout", async (req, res) => {
         try {
-            const { user_id } = req.body;
+            //const { user_id } = req.body;
+            const userid = req.session.userid
             //erreur ?
-            if(!user_id){
-                res.status(400).json({
-                    status: 400,
-                    "message": "Requete invalide : user_id nécessaire"
+            if(!userid){
+                res.status(401).json({
+                    //status: 400,
+                    "message": "utilisateur non authentifié !"
                 });
                 return;
             }
+            /*
             //user_id n'existe pas? 
             if(! await users.exists(user_id)) {
                 res.status(401).json({
@@ -134,6 +136,8 @@ function init(db) {
                 });
                 return;
             }
+            */
+           /*
             //est ce qu'il est conecté? non
             if(! (req.session.user_id === user_id)  ){ //ou == pour alléger
                 res.status(400).json({
@@ -142,15 +146,18 @@ function init(db) {
                 });
                 return;
             }
-            //user_id valide et connecté -> on le deconnecte
-            req.session.disconnect();
+            */
+
+            //on le deconnecte
+            req.session.destroy();
             res.status(201).json({
-                status: 201,
-                message: "déconnexion réussie"
+                //status: 201,
+                message: "déconnexion réussie",
+                userid: userid
             })
             return;
 
-        } catch (error) {
+        } catch (e) {
             // Toute autre erreur
             res.status(500).json({
                 status: 500,
