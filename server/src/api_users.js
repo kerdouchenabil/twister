@@ -1,6 +1,6 @@
 const express = require("express");
 const Users = require("./entities/users.js");
-const session = require("express-session") // ?
+//const session = require("express-session") // ?
 
 function init(db) {
     const router = express.Router();
@@ -47,6 +47,7 @@ function init(db) {
                     else {
                         // C'est bon, nouvelle session créée
                         req.session.userid = userid;
+                        console.log('session id=', req.session.id, '  créée pour session.userid=', req.session.userid)
                         /*
                         console.log("-->session_id=", req.session.id)
                         console.log("-->session_userid=", req.session.userid)
