@@ -81,7 +81,6 @@ function init(db) {
             try{
                 const id_to  = req.params.user_id
                 console.log("id_to ==", id_to)
-                //console.log(`add friend: req.body= ${JSON.stringify(req.body)}`) ///////test
 
                 if (! id_to ) {
                     res.status(400).json({message:"delete friend: Missing fields"});
@@ -96,8 +95,6 @@ function init(db) {
 
                 // récuperer l'id user de la session
                 id_from = req.session.userid /// voir si suffisant (quand on aura  mongoose  pour les sessions)
-
-                //console.log('api_friends: session id=', req.session.id, '  session.userid=', req.session.userid) // test
                 
                 // friend existe ? facultatif
                 try{
@@ -126,27 +123,39 @@ function init(db) {
                     details: (error || "Erreur inconnue").toString()
                 })
             }
-            ///////////////////////////////////////////////
-            
 
-
-
-            
         })
+
+
+        //----------------------- list friends ----------------------
         .get(async (req,res)=>{
-            /*
-            if (  ) { //TODO verifier si utilisateur connecté
-                res.status(400).send("User not connected");
-                return;
-                
-            }
-            */
             try {
                 const id_from = req.params.user_id
                 if(! id_from ) {
                     res.status(400).json({message:"list friends: Missing fields"});
                     return;
                 }
+
+                // utilisateur connecté ?
+                if (! req.session.userid ) {
+                    res.status(401).json({message:"list friends: utilisateur non authentifié"});
+                    return;
+                }
+
+                // user exists ?
+                try{
+                    if(! await users.exists_id(id_from)) { 
+                        res.status(400).json({
+                            //status: 400, //duplication !
+                            message: "list friends: user not found"
+                        });
+                        return;
+                    }
+                }catch(e){
+                    res.status(500).send("user not found !")
+                    return;
+                }
+
                 await friends.list_friends(id_from)
                     .then((got) => res.status(200).send(got) )
                     .catch((err) => res.status(500).send(err))  

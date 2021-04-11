@@ -64,14 +64,18 @@ class Friends {
       }
 
       
-      async list_friends(id){
+      async list_friends(id_from){
         let _this = this
         return new Promise((resolve,reject)=>{
-          const st = _this.db.prepare("SELECT u.lastname,u.firstname from friends f,users u  where f.id_from = ? and f.id_to = u.rowid ")
-          st.run(id,function(err,res){
+          const st = _this.db.prepare("SELECT u.firstname, u.lastname FROM friends f,users u  WHERE f.id_from = ? AND f.id_to = u.rowid ")
+          st.all(id_from,function(err,res){
             if(err){
               reject(err)
             }else{
+              /* //affichage test
+              console.log("list friends= ", res)
+              res.forEach(element => console.log(element));
+              */
               resolve(res)
             }
           })

@@ -3,4 +3,4 @@ server/*.json
 client/node_modules/
 client/*.json
 server/db0
-server/db1.db
+server/*.db
