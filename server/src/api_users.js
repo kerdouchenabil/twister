@@ -34,7 +34,16 @@ function init(db) {
                 });
                 return;
             }
-            let userid = await users.checkpassword(login, password);
+
+            let userid; //declaration en dehors du try
+            try{
+                userid = await users.checkpassword(login, password)
+            }catch(e){
+                res.status(403).send("login et/ou le mot de passe invalide(s)");
+                return; //ne pas oublier le return !
+            }
+                
+            
             if (userid) {
                 // Avec middleware express-session
                 req.session.regenerate(function (err) {
@@ -64,7 +73,7 @@ function init(db) {
             // Faux login : destruction de la session et erreur
             req.session.destroy((err) => { });
             res.status(403).json({
-                status: 403,
+                //status: 403,
                 message: "login et/ou le mot de passe invalide(s)"
             });
             return;
