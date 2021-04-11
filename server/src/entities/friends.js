@@ -22,18 +22,48 @@ class Friends {
       }
 
       async delete(id_from,id_to){
+
         let _this = this 
+
+        //verifier dabord si friendship exists
+        let ex = await _this.exists(id_from, id_to);
+
         return new Promise((resolve,reject) => {
-          const st = _this.db.prepare("DELETE  FROM friends where id_from = ? and id_to = ?")
+          //si friendship n'existe pas
+          if(!ex){
+            reject(false)
+          }
+          const st = _this.db.prepare("DELETE FROM friends where id_from = ? and id_to = ?")
           st.run([id_from, id_to],function(err, res){
-            if(err){
-              reject(err)
-            }else{
+            resolve(true)
+            /*
+            if(res){
               resolve(true)
+            }else{
+              reject(err)
             }
+            */
           })
         });
       }
+
+      //return frindship if exists
+      exists(id_from,id_to) {
+
+        return new Promise((resolve, reject) => {
+    
+          var st = this.db.prepare("SELECT * FROM friends where id_from = ? and id_to = ?")
+          st.get([id_from, id_to], function(err, res){
+            if(err){
+              reject(err)
+            }else{
+              resolve(res)
+            }
+          })
+         });
+      }
+
+      
       async list_friends(id){
         let _this = this
         return new Promise((resolve,reject)=>{

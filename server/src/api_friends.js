@@ -22,8 +22,6 @@ function init(db) {
         .route("/friends/:user_id(\\d+)")
         .post(async (req, res) => {
             try{
-                
-                //const { id_to } = req.body; //id de l'ami à ajouter
                 const id_to  = req.params.user_id
                 console.log("id_to ==", id_to)
                 //console.log(`add friend: req.body= ${JSON.stringify(req.body)}`) ///////test
@@ -76,32 +74,64 @@ function init(db) {
                 })
             }
         })
+
+    //----------------------- DELETE friend ----------------------
+
         .delete(async (req, res)=>{
-            /*
-            if (  ) { //TODO verifier si utilisateur connecté
-                res.status(400).send("User not connected");
-                return;
-                
-            }
-            */
             try{
                 const id_to  = req.params.user_id
+                console.log("id_to ==", id_to)
+                //console.log(`add friend: req.body= ${JSON.stringify(req.body)}`) ///////test
+
                 if (! id_to ) {
                     res.status(400).json({message:"delete friend: Missing fields"});
                     return;
                 }
-                id_from = 1
-                await friends.delete(id_from,id_to)
-                    .then((deleted) => res.status(200).send() )
-                    .catch((err) => res.status(500).send(err))  
+
+                // utilisateur connecté ?
+                if (! req.session.userid ) {
+                    res.status(401).json({message:"delete friend: utilisateur non authentifié"});
+                    return;
+                }
+
+                // récuperer l'id user de la session
+                id_from = req.session.userid /// voir si suffisant (quand on aura  mongoose  pour les sessions)
+
+                //console.log('api_friends: session id=', req.session.id, '  session.userid=', req.session.userid) // test
+                
+                // friend existe ? facultatif
+                try{
+                    if(! await users.exists_id(id_to)) { 
+                        res.status(400).json({
+                            //status: 400, //duplication !
+                            message: "api_friend: friend not found"
+                        });
+                        return;
+                    }
+                }catch(e){
+                    res.status(500).send("friend not found !")
+                    return;
+                }
+                
+                //delete the friendship, the function tests if it exists
+                friends.delete(id_from,id_to)
+                    .then((deleted) => res.status(200).send("friend deleted !") ) 
+                    .catch( () => res.status(400).send("friendship not found !") )
+                
             } catch (error) {
                 // Toute autre erreur
                 res.status(500).json({
-                    status: 500,
-                    message: "erreur interne",
+                    //status: 500,
+                    message: "api_friend: erreur interne",
                     details: (error || "Erreur inconnue").toString()
                 })
             }
+            ///////////////////////////////////////////////
+            
+
+
+
+            
         })
         .get(async (req,res)=>{
             /*
