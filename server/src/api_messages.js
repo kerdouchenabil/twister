@@ -109,7 +109,29 @@ function init(db) {
         }
     })
 
+    //--------------------like message -------------------------
+    router.route("/messages/like/:message_id")
+    .put( async(req,res) => {
+        try{
+             // utilisateur connecté ?
+             if (! req.session.userid ) {
+                res.status(401).json({message:"like message: utilisateur non authentifié"});
 
+                return;
+            }
+            
+            const msg = await messages.like(req.params.message_id);
+
+            if (!msg)
+                res.sendStatus(404);
+            else
+                res.status(201).send(msg)
+        }catch(error){
+            res.status(500).send(error);
+        }
+        
+
+    })
 
 
         //.route("/messages/:user_id(\\d+)")

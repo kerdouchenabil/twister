@@ -13,7 +13,7 @@ class Messages {
 
       try{
         let now = new Date(Date.now())
-        let msg = {user: user_id, date: now, text: text_msg, file: file_msg, likes: "0", comments: []}; //
+        let msg = {user: user_id, date: now, text: text_msg, file: file_msg, likes: 0 , comments: []}; //
         //console.log(msg) //test
         return new Promise((resolve, reject) => {
   
@@ -77,7 +77,41 @@ class Messages {
         return "list messages error !"
       }
     }
+    // like message 
+    async like(id_msg){
 
+      try{
+        let _this = this
+        return new Promise((resolve,reject)=>{
+          try {
+            
+            _this.db.findOne({ _id: id_msg }, function (err, doc) {
+              if (err){
+                
+                reject(err)
+  
+              }
+  
+              else{
+                _this.db.update({ _id: id_msg }, { $inc: { likes: 1 } })
+
+                resolve("liked")
+              }
+            });
+          }catch(e){
+
+                reject("message not found !")
+                return ;
+          }
+
+        });
+      }catch(e){
+
+        return "like message error !"
+      }
+
+        
+    }
 
 }
 
