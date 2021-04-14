@@ -13,7 +13,7 @@ class MainPage extends React.Component {
     setConnected = () => {
         this.setState({
           isConnected: true,
-          currentPage: 'messages',
+          currentPage: 'login',
         });
       }
     
@@ -27,6 +27,10 @@ class MainPage extends React.Component {
       signup = () => {
         this.setState({ currentPage: 'signup' });
       }
+
+      signin = () => {
+        this.setState({ currentPage: 'login' });
+      }
     
     render() {
         const { isConnected, currentPage } = this.state;
@@ -36,7 +40,7 @@ class MainPage extends React.Component {
           
           
           { //bouton logout qui s'affiche si on est connecté
-            isConnected && <button onClick={() => { this.setLogout(); }}>Se déconnecter</button>
+            //isConnected && <button onClick={() => { this.setLogout(); }}>Se déconnecter</button>
           }
 
           <main>
@@ -47,6 +51,7 @@ class MainPage extends React.Component {
                 login={() => { this.setConnected() }}  
                 logout={() => { this.setLogout() }}  
                 signup={() => { this.signup() }}
+                signin={() => { this.signin() }}
               />
             }
 
@@ -61,6 +66,7 @@ class MainPage extends React.Component {
             {currentPage === 'signup' && 
               <SignUp
                 login={() => { this.setConnected() }} 
+                signin={() => { this.signin() }} 
               />
             }
 
