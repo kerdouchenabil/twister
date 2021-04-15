@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 //import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import './css/MainPage.css';
 
 class Login extends React.Component {
   render() {
@@ -24,15 +25,15 @@ class Login extends React.Component {
       <CssBaseline />
       <div >
         
-        <Typography component="h1" variant="h5" >
+        <Typography component="h2" variant="h5" >
           Sign in
         </Typography>
         <form noValidate>
           <TextField
           inputProps={{
-            //style: {
-              //padding: 20
-            //}
+            style: {
+              padding: 20
+            }
          }}
             variant="outlined"
             margin="normal"
@@ -68,7 +69,7 @@ class Login extends React.Component {
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
-                <br></br> Forgot password?
+                Forgot password?
               </Link>
             </Grid>
             <Grid item>

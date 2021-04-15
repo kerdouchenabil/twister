@@ -2,7 +2,7 @@ import React from 'react';
 import NavigationPanel from './NavigationPanel';
 import MessagesPage from './MessagesPage';
 import SignUp from './SignUp';
-import './login.css';
+import './css/MainPage.css';
 
 class MainPage extends React.Component {
     constructor(props){

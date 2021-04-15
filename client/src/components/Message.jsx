@@ -16,9 +16,15 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+import { sizing } from '@material-ui/system';
+
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    width:"90%",
+    maxWidth: 'auto',
+    minWidth: 1200,
+    //maxHeight: 200 //prob
+
   },
   media: {
     height: 0,
@@ -50,7 +56,7 @@ export default function Message({props}) {
 
   return (
 
-    <Card className={classes.root}>
+    <Card id="message" className={classes.root}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
