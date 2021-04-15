@@ -14,9 +14,10 @@ class NavigationPanel extends React.Component {
     const { login, logout, signup, isConnected } = this.props;
     
     return <nav id="navPanel">
-      {isConnected
-        ? <Logout logout={logout} />
-        : <Login login={login} />}
+      { !isConnected && <Login login={login} />}
+      
+      { isConnected && <Logout logout={logout} />}
+       
       {!isConnected && <p>
         Vous n'avez pas encore de compte ?
         <Button variant="contained" color="primary" onClick={() => { signup(); }}>S'inscrire</Button>

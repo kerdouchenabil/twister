@@ -28,6 +28,7 @@ class MainPage extends React.Component {
         this.setState({ currentPage: 'signup' });
       }
 
+      // a verif, n'est pas utilisée
       signin = () => {
         this.setState({ currentPage: 'login' });
       }
@@ -66,7 +67,7 @@ class MainPage extends React.Component {
             {currentPage === 'signup' && 
               <SignUp
                 login={() => { this.setConnected() }} 
-                signin={() => { this.signin() }} 
+                logout={() => { this.setLogout() }} 
               />
             }
 

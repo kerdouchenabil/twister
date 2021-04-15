@@ -62,7 +62,7 @@ class SignUp extends React.Component {
       </div>;
 */
       //////////////////////////////// material ui
-      const { signup, signin } = this.props;
+      const { signup, logout } = this.props;
         
         return <div className="SignUpform" >
             
@@ -140,7 +140,7 @@ class SignUp extends React.Component {
             
             variant="contained"
             color="primary"
-            onClick={() => { signin(); }} ///
+            onClick={() => { logout(); }} ///
           >
             Sign in
           </Button>
