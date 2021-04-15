@@ -59,6 +59,8 @@ class MainPage extends React.Component {
 
             {currentPage === 'messages' && 
               <MessagesPage 
+
+                isConnected={() => { this.isConnected() }}
                 logout={() => { this.setLogout() }}  //param ici ou mettre directement dans page principale
               
               />

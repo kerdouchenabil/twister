@@ -24,7 +24,7 @@ class Login extends React.Component {
       <CssBaseline />
       <div >
         
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" >
           Sign in
         </Typography>
         <form noValidate>

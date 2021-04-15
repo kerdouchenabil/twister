@@ -1,4 +1,6 @@
 import React from 'react'
+import Logout from './Logout';
+import Message from './components/Message';
 
 class MessagesPage extends React.Component {
 
@@ -9,10 +11,19 @@ class MessagesPage extends React.Component {
 
   
   render() {
-    return 
-    <div>
-      <h2>Liste des messages</h2>
-    </div>;
+
+    const { isConnected, logout } = this.props
+
+    return (
+
+      <nav id="messages">
+        
+        <Message />
+
+        
+      </nav>
+ 
+    )
   }
 }
 
