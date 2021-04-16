@@ -15,9 +15,54 @@ import Grid from '@material-ui/core/Grid';
 //import Container from '@material-ui/core/Container';
 //import { palette } from '@material-ui/system';
 
-
+import axios from 'axios';
 class SignUp extends React.Component {
+  state = {
 
+    login : '',
+    password : '',
+    lastname : '',
+    firstname : '',
+    data:{}
+  }
+  changeLogin = event => {
+    const val = event.currentTarget.value;
+    const val1 = event.currentTarget.type
+    this.setState({login : val})
+  }
+  changePassword = event => {
+    const val = event.currentTarget.value;
+    this.setState({password : val})
+  }
+  changeLastname = event => {
+    const val = event.currentTarget.value;
+    this.setState({lastname : val})
+  }
+  changeFirstname = event => {
+    const val = event.currentTarget.value;
+    this.setState({firstname : val})
+  }
+
+  handleSubmit = (event) =>{
+        
+    event.preventDefault();
+    const api = axios.create({
+        baseURL : '/api/',
+        timeout : 1000,
+        headers : {'X-Custom-Header' : 'foobar'}
+        });
+    api.post('/user/',{"login": this.state.login,"password" : this.state.password,"lastname" : this.state.lastname,"firstname" : this.state.firstname},) 
+      .then(response => {
+        console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+        if(response.status == 201){
+          console.log(response);
+          this.props.logout();
+          alert("compte crée avec succés !")
+        }
+
+       });
+
+  }
     render() {
 /*
         const { login } = this.props;
@@ -76,6 +121,8 @@ class SignUp extends React.Component {
                 autoComplete="fname"
                 name="firstName"
                 variant="outlined"
+                value={this.state.firstname}
+                onChange={this.changeFirstname}
                 required
                 fullWidth
                 id="firstName"
@@ -86,6 +133,8 @@ class SignUp extends React.Component {
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
+                value={this.state.lastname}
+                onChange={this.changeLastname}
                 required
                 fullWidth
                 id="lastName"
@@ -97,6 +146,8 @@ class SignUp extends React.Component {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
+                value={this.state.login}
+                onChange={this.changeLogin}
                 required
                 fullWidth
                 id="email"
@@ -108,6 +159,8 @@ class SignUp extends React.Component {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
+                value={this.state.password}
+                onChange={this.changePassword}
                 required
                 fullWidth
                 name="password"
@@ -126,7 +179,7 @@ class SignUp extends React.Component {
             fullWidth
             variant="contained"
             color="primary"
-            onClick={() => { signup(); }} ///
+            onClick= { this.handleSubmit  } ///
           >
             Sign Up
           </Button>
