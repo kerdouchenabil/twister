@@ -2,7 +2,15 @@ import React from 'react';
 import NavigationPanel from './NavigationPanel';
 import MessagesPage from './MessagesPage';
 import SignUp from './SignUp';
+import AppBar from './components/AppBar'
+
+import Test from './components/Test'
+
 import './css/MainPage.css';
+import logo from './twister_anim.gif';
+//import logo from './logo.svg';  
+//import logo from './Twister_bleu.png';
+
 
 class MainPage extends React.Component {
     constructor(props){
@@ -37,14 +45,21 @@ class MainPage extends React.Component {
         const { isConnected, currentPage } = this.state;
     
         return <div>
-          <h1>Twister</h1>
-          
-          
-          { //bouton logout qui s'affiche si on est connecté
-            //isConnected && <button onClick={() => { this.setLogout(); }}>Se déconnecter</button>
-          }
 
-          <main>
+            
+              
+              <div className="header_container">
+
+              
+                
+              </div>
+              { ! isConnected &&
+              <div className="container">
+                <img src={logo} alt="logo" className="twister_logo" height="200" width="18%" />
+              </div>   
+              }
+
+          <main >
             {
               currentPage === 'login' &&
               <NavigationPanel

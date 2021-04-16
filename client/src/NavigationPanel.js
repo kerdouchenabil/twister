@@ -5,7 +5,13 @@ import Button from '@material-ui/core/Button';
 import Message from './components/Message';
 
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+
+
 import AppBar from './components/AppBar'
+import Test from './components/Test'
+
+import './css/MainPage.css';
 
 
 class NavigationPanel extends React.Component {
@@ -18,18 +24,31 @@ class NavigationPanel extends React.Component {
   render() {
     const { login, logout, signup, isConnected } = this.props;
 
-    const props = {"title":"titre du post", "avatar":"Z", "date":Date.now(), "media":"media", "image_file":"image file", "image_title":"img title", "message":"voici mon message post !"}
-
     
-    return <div width="100%" color="blue" id="navPanel">
+    return <div>
       { !isConnected && <Login login={login} />}
-      
-      { isConnected && <Logout logout={logout} />}
 
-      
-      { isConnected && <AppBar />}
+      {isConnected &&
       
 
+        <div>
+        <div className="header_container">
+          <div>
+          { isConnected && <AppBar />}
+          </div>
+          <div>
+          <Logout logout={logout} />
+          </div>
+        </div>
+
+        </div>
+
+
+
+      }
+
+
+      
 
       <div width="100" p={1} my={0.5}>
       

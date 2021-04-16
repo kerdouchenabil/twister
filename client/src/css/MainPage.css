@@ -1,17 +1,54 @@
-body {
-	width: 100%;
-  margin: 0;
-  padding: 0;
-  font-size: 0.8em;
-  text-align: center;
-  font-family: "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "sans-serif";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-	/*background-color: #00aabb;*/
+/*
+html { 
+	background: "./Twister_bleu.png" no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+  }
+*/
 
+body {
+	position: relative;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	font-size: 0.8em;
+	text-align: center;
+	font-family: "Segoe UI", "Roboto", "Oxygen",
+		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "sans-serif";
+	-webkit-font-smoothing: antialiased;
+  	-moz-osx-font-smoothing: grayscale;
 }
 
+.principal{
+	background-color: rgb(29, 89, 219);
+}
+
+.twister_logo{
+	align: center;
+	display: block;
+}
+
+.container{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly
+  }
+
+.header_container{
+	display: flex;
+	flex-direction: row;
+	/*justify-content: space-evenly;*/
+	justify-content: space-between;
+	/*height: 150;*/
+    text-align: center;
+	background-color: rgba(21, 153, 153, 0.863);
+    color :#ffffff;
+	font-family: "Lucida Console", "Courier New", monospace;
+  }
+  
+/*
 h1 {
 	margin: 0;
   	padding: 0;
@@ -21,7 +58,7 @@ h1 {
     color :#ffffff;
 	font-family: "Lucida Console", "Courier New", monospace;
 }
-
+*/
 /*
 .message {
 	margin: 0;

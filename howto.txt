@@ -8,6 +8,8 @@ npm install mongoose # a confirmer
 
 #installer les modules (au niveau du dossier twister) :
 npm install -g create-react-app
+
+#installer les modules material ui pour le front-end (au niveau du dossier client) :
 npm install @material-ui/core
 npm install @material-ui/lab
 npm install @material-ui/icons
