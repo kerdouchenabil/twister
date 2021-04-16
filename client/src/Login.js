@@ -15,8 +15,47 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
 import './css/MainPage.css';
-
+import axios from 'axios';
 class Login extends React.Component {
+  state = {
+
+    login : '',
+    password : '',
+    data:{}
+  }  
+  changeLogin = event => {
+    const val = event.currentTarget.value;
+    const val1 = event.currentTarget.type
+    this.setState({login : val})
+  }
+  changePassword = event => {
+    const val = event.currentTarget.value;
+    this.setState({password : val})
+  }
+
+  handleSubmit = (event) =>{
+    
+    event.preventDefault();
+    const api = axios.create({
+        baseURL : '/api/',
+        timeout : 1000,
+        headers : {'X-Custom-Header' : 'foobar'}
+        });
+    api.post('/user/login',{"login": this.state.login,"password" : this.state.password},) 
+    .then(response => {
+        //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+        if(response.data.status == 200){
+          this.props.login()
+        }
+    }).catch( response => {
+      //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+
+        alert("email/password incorrect !")
+
+        
+    });
+
+  }
   render() {
     const { login } = this.props;
 
@@ -28,13 +67,15 @@ class Login extends React.Component {
         <Typography component="h2" variant="h5" >
           Sign in
         </Typography>
-        <form noValidate>
+        <form noValidate >
           <TextField
           inputProps={{
             style: {
               padding: 20
             }
          }}
+            value={this.state.login}
+            onChange={this.changeLogin}
             variant="outlined"
             margin="normal"
             required
@@ -46,6 +87,8 @@ class Login extends React.Component {
             autoFocus
           />
           <TextField
+            value={this.state.password}
+            onChange={this.changePassword}
             variant="outlined"
             margin="normal"
             required
@@ -62,7 +105,7 @@ class Login extends React.Component {
             fullWidth
             variant="contained"
             color="primary"
-            onClick={() => { login(); }}
+            onClick= {this.handleSubmit }
           >
             Sign In
           </Button>
