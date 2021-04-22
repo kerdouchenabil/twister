@@ -8,6 +8,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
+import IconButton from '@material-ui/core/IconButton';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import DehazeTwoToneIcon from '@material-ui/icons/DehazeTwoTone';
+import SupervisorAccountSharpIcon from '@material-ui/icons/SupervisorAccountSharp';
+
+import List_friends from "./List_friends"
 
 const StyledMenu = withStyles({
   paper: {
@@ -40,7 +46,11 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export default function CustomizedMenus() {
+export default function CustomizedMenus(props) {
+
+  const { show_friends } = props;
+
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -53,6 +63,12 @@ export default function CustomizedMenus() {
 
   return (
     <div>
+      <label htmlFor="icon-button-file">
+        <IconButton color="primary" aria-label="Menu" component="span" onClick={handleClick}>
+          <DehazeTwoToneIcon style={{ fontSize: 50 }}/>
+        </IconButton>
+      </label>
+      {/*
       <Button
         aria-controls="customized-menu"
         aria-haspopup="true"
@@ -62,31 +78,44 @@ export default function CustomizedMenus() {
       >
         Open Menu
       </Button>
+      */}
+
+
       <StyledMenu
         id="customized-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
-      >
-        <StyledMenuItem onClick={() => { alert("Post !"); }}>
-          <ListItemIcon>
-            <SendIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Post" />
-        </StyledMenuItem>
-        <StyledMenuItem onClick={() => { alert("Actualité !"); }}>
-          <ListItemIcon>
-            <DraftsIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Actualité" />
-        </StyledMenuItem >
+      > 
         <StyledMenuItem onClick={() => { alert("Profil !"); }}>
           <ListItemIcon>
             <InboxIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Profil" />
         </StyledMenuItem>
+
+        <StyledMenuItem onClick={() => { alert("Post !"); }}>
+          <ListItemIcon>
+            <SendIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Post" />
+        </StyledMenuItem>
+
+        <StyledMenuItem onClick={() => { alert("Actualité !"); }}>
+          <ListItemIcon>
+            <DraftsIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Actualité" />
+        </StyledMenuItem >
+
+        <StyledMenuItem onClick={() =>  {show_friends()} }>
+          <ListItemIcon>
+            <SupervisorAccountSharpIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Friends" />
+        </StyledMenuItem>
+
       </StyledMenu>
     </div>
   );

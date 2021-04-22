@@ -1,5 +1,7 @@
 import React from 'react'
 import Button from '@material-ui/core/Button';
+import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp';
+import IconButton from '@material-ui/core/IconButton';
 
 import axios from 'axios';
 class Logout extends React.Component {
@@ -23,7 +25,12 @@ class Logout extends React.Component {
 
   }
   render() {
-    return <Button variant="contained" color='secondary' onClick={this.handleSubmit}>Se déconnecter</Button>
+    return <label htmlFor="icon-button-file">
+             <IconButton color="secondary" aria-label="Menu" component="span" onClick={this.handleSubmit}>
+              <ExitToAppSharpIcon style={{ fontSize: 50 }}/>
+             </IconButton>
+            </label>
+    
   }
 }
 
