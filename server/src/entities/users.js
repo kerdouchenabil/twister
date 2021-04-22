@@ -51,6 +51,7 @@ class Users {
       const st = _this.db.prepare("INSERT INTO users VALUES (?,?,?,?)")
       st.run([login, password, lastname, firstname], function(err, res){
         if(err){
+          console.error(err)
           reject(err)
         }else{
           resolve(this.lastID)
@@ -60,13 +61,14 @@ class Users {
   }
 
 
-  get(userid) {
+  async get(userid) {
 
     return new Promise((resolve, reject) => {
 
       var st = this.db.prepare("SELECT * FROM users WHERE rowid = ?")
       st.get([userid], function(err, res){
         if(err){
+
           reject(err)
         }else{
           resolve(res)

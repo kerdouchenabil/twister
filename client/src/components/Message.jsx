@@ -15,6 +15,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import moment from 'moment'
 
 import { sizing } from '@material-ui/system';
 
@@ -60,7 +61,7 @@ export default function Message({props}) {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            {JSON.parse(props).avatar}
+            {JSON.parse(props).user}
           </Avatar>
         }
         action={
@@ -68,17 +69,17 @@ export default function Message({props}) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={JSON.parse(props).title}//{props.title}
-        subheader={JSON.parse(props).date} // a regler
+        title={JSON.parse(props).text}//{props.title}
+        subheader={moment(JSON.parse(props).date).fromNow()} regler
       />
       <CardMedia
         className={classes.media}
-        image={JSON.parse(props).image_path}
+        image={JSON.parse(props).file}
         title={JSON.parse(props).image_title}
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          {JSON.parse(props).message}
+          {JSON.parse(props).likes}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

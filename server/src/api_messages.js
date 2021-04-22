@@ -1,12 +1,14 @@
 const express = require("express");
 const Messages = require("./entities/messages.js");
+const Users = require("./entities/users.js");
 
 const bodyParser = require('body-parser');
 const url = require('url');
 const querystring = require('querystring');
+const { userInfo } = require("os");
 
 
-function init(db) {
+function init(db_nosql, db) {
     const router = express.Router();
     // On utilise JSON
     router.use(express.json());
@@ -17,7 +19,9 @@ function init(db) {
         console.log('Body', req.body);
         next();
     });
-    const messages = new Messages.default(db);
+
+    const messages = new Messages.default(db_nosql);
+    const users = new Users.default(db); //db ?
 
     //
     router
@@ -47,7 +51,25 @@ function init(db) {
                     return;
                 }
 
-                messages.create(userid, text, file) //utiliser  x = await fonction... aulieu des .then 
+                //recuperer le nom et prenom du user
+                user = "" //juste pour declarer
+                try {
+                    user = users.get(req.session.userid);
+                }
+                catch (e) {
+                    res.status(500).send(e);
+                    return
+                }
+                firstname = ""
+                lastname = ""
+                
+                ///////////a verif
+                users.get(userid)
+                .then((res)=>{console.log("****",res); firstname=res.firstname; lastname=res.lastname})
+                .catch((err)=>{firstname="anonyme", lastname="anonyme"})
+                console.log("----- firstname=", user.firstname)
+
+                messages.create(userid, firstname, lastname, text, file) //utiliser  x = await fonction... aulieu des .then 
                     .then((added) => res.status(201).send({ create_message: added })) //pas la peine de retourner l'id, le status suffit
                     .catch((err) => res.status(500).send(err));
             } catch (error) {
@@ -97,7 +119,7 @@ function init(db) {
             console.log('list messages: session id=', req.session.id, '  session.userid=', req.session.userid) // test
 
             messages.list_all(max_time, friends_only) //utiliser  x = await fonction... aulieu des .then 
-                .then((msgs) => res.status(201).send(msgs)) //pas la peine de retourner l'id, le status suffit
+                .then((msgs) => res.status(200).send(msgs)) //pas la peine de retourner l'id, le status suffit
                 .catch((err) => res.status(500).send(err));
         } catch (error) {
             // Toute autre erreur
@@ -125,7 +147,7 @@ function init(db) {
             if (!msg)
                 res.sendStatus(404);
             else
-                res.status(201).send(msg)
+                res.status(200).send(msg)
         }catch(error){
             res.status(500).send(error);
         }

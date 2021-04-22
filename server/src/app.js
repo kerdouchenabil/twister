@@ -52,7 +52,7 @@ const Datastore = require("nedb")
 let db_nosql = new Datastore("db1.db")
 db_nosql.loadDatabase()
 //api_3 = require("./api_messages.js");////////////
-app.use('/api', api_messages.default(db_nosql)); //on passe la db_nosql pour les messages
+app.use('/api', api_messages.default(db_nosql, db)); //on passe la db_nosql pour les messages
 /*
 const fullDate = Date()
 console.log(fullDate)

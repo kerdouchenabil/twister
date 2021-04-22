@@ -48,7 +48,7 @@ const StyledMenuItem = withStyles((theme) => ({
 
 export default function CustomizedMenus(props) {
 
-  const { show_friends } = props;
+  const { show_messages, show_friends } = props;
 
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -102,7 +102,7 @@ export default function CustomizedMenus(props) {
           <ListItemText primary="Post" />
         </StyledMenuItem>
 
-        <StyledMenuItem onClick={() => { alert("Actualité !"); }}>
+        <StyledMenuItem onClick={() => { alert("Actualité !"); show_messages()}}>
           <ListItemIcon>
             <DraftsIcon fontSize="small" />
           </ListItemIcon>

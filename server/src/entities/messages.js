@@ -7,13 +7,13 @@ class Messages {
     }
 
 
-    async create(user_id, text_msg, file_msg) {
+    async create(user_id, firstname_msg, lastname_msg, text_msg, file_msg) {
       let _this = this
       console.log("debut message creation: user=", user_id, " date=", new Date(Date.now())) //affichage test
 
       try{
         let now = new Date(Date.now())
-        let msg = {user: user_id, date: now, text: text_msg, file: file_msg, likes: 0 , comments: []}; //
+        let msg = {user: user_id, firstname: firstname_msg, lastname: lastname_msg, date: now, text: text_msg, file: file_msg, likes: 0 , comments: []}; //
         //console.log(msg) //test
         return new Promise((resolve, reject) => {
   

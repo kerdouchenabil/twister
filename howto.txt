@@ -3,6 +3,7 @@
 npm install mocha chai chai-http express express-session path
 npm install sqlite3
 npm install nedb
+npm install -s nodemon # puis remplacer 'node' par 'nodemon' dand package.json
 npm install express-sessions #mongoose a confirmer
 npm install mongoose # a confirmer
 
@@ -14,6 +15,9 @@ npm install @material-ui/core
 npm install @material-ui/lab
 npm install @material-ui/icons
 npm install fontsource-roboto
+
+npm install moment --save
+
 
 #DB browser for sqlite3 (installation linux deb)
 sudo apt-get update
