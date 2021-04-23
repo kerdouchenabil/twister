@@ -22,7 +22,7 @@ import { sizing } from '@material-ui/system';
 const useStyles = makeStyles((theme) => ({
   root: {
     width:"90%",
-    maxWidth: 'auto',
+    maxWidth: 1200, //'auto'
     minWidth: 800,
     //maxHeight: 200 //prob
 

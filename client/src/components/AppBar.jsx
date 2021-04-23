@@ -12,12 +12,15 @@ import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import DehazeTwoToneIcon from '@material-ui/icons/DehazeTwoTone';
 import SupervisorAccountSharpIcon from '@material-ui/icons/SupervisorAccountSharp';
+import Avatar from '@material-ui/core/Avatar';
+
 
 import ListFriends from "./ListFriends"
 
 const StyledMenu = withStyles({
   paper: {
     border: '1px solid #d3d4d5',
+    
   },
 })((props) => (
   <Menu
@@ -48,7 +51,7 @@ const StyledMenuItem = withStyles((theme) => ({
 
 export default function CustomizedMenus(props) {
 
-  const { show_messages, show_friends } = props;
+  const { show_messages, show_friends, show_post_message } = props;
 
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -95,7 +98,7 @@ export default function CustomizedMenus(props) {
           <ListItemText primary="Profil" />
         </StyledMenuItem>
 
-        <StyledMenuItem onClick={() => { alert("Post !"); }}>
+        <StyledMenuItem onClick={() => { show_post_message() }}>
           <ListItemIcon>
             <SendIcon fontSize="small" />
           </ListItemIcon>

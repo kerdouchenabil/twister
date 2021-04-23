@@ -28,6 +28,8 @@ class NavigationPanel extends React.Component {
     super(props);
     this.state = { "content": "messages" }
     //
+    this.user_data = this.get_user_data()
+
     this.messages = []
     this.friends = []
   }
@@ -84,6 +86,22 @@ class NavigationPanel extends React.Component {
       });
   }
 
+  get_user_data(){
+    api.get("/users/0") 
+      .then(response => {
+        console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+        if (response.status == '200') {
+          
+          this.user_data = response.data //liste des messages
+          console.log("------------->", this.user_data)
+          return response.data // a verifier
+        }
+      }).catch(response => {
+        //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+        alert("pas de user_data à récuperer !")
+      });
+  }
+
   render() {
     const { login, logout, signup, isConnected } = this.props;
 
@@ -101,12 +119,18 @@ class NavigationPanel extends React.Component {
               {isConnected && <AppBar
                 show_messages={() => { this.show_messages() }}
                 show_friends={() => { this.show_friends() }}
+                show_post_message={() => { this.show_post_message() }}
               />}
+            </div>
+
+            <div>
+              <h1> {/*this.user_data.firstname+" "+this.user_data.lastname*/ "Anonyme"} </h1>
             </div>
 
             <div>
               <Logout logout={logout} />
             </div>
+            
 
           </div>
 
