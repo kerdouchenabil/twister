@@ -70,7 +70,7 @@ class NavigationPanel extends React.Component {
   }
 
   refresh_friends(){
-    api.get("/friends/1") // changer le 1 , juste pour tester
+    api.get("/friends/0") 
       .then(response => {
         console.log(response); // à tester la première fois pour voir ce que retourne le serveur
         if (response.status == '200') {
