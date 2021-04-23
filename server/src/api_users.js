@@ -182,6 +182,34 @@ function init(db) {
             });
         }
     });
+    router.get("/user/search/:string",async (req, res) => {
+        const userid = req.session.userid
+        //erreur ?
+        if (!userid) {
+            res.status(401).json({
+                //status: 400,
+                "message": "utilisateur non authentifié !"
+            });
+            return;
+        }
+            try {
+                str = req.params.string
+                if(str.indexOf(" ") == -1){
+
+                    const ser = await users.search(str)
+                    console.log(str)
+                    if(!ser)
+                        res.sendStatus(404);
+                    else
+                        res.status(201).send(ser);
+                }
+
+            }
+            catch (e) {
+
+                res.status(500).send(e);
+            }
+        })
 
 
     return router;

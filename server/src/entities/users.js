@@ -114,7 +114,7 @@ class Users {
 
     return new Promise((resolve, reject) => {
       try{
-        var st = this.db.prepare("SELECT rowid as userid FROM users WHERE login = ? AND password = ?")
+        var st = this.db.prepare("SELECT rowid as userid,firstname,lastname FROM users WHERE login = ? AND password = ?")
         st.get([login, password], function(err, res){
           if(err){
             reject(err)
@@ -137,9 +137,34 @@ class Users {
       
      });
   }
+  async search(str0){
+    return new Promise((resolve, reject)=>{
+      try{
+        str = str0.toLowerCase()
+        str = "%"+str+"%"
+        var st = this.db.prepare("SELECT rowid as userid,login ,firstname,lastname from users where LOWER(login) like ?  UNION  SELECT rowid as userid,login ,firstname,lastname from users where LOWER(lastname) like ?    UNION    SELECT rowid as userid,login ,firstname,lastname from users where LOWER(firstname) like ?")
+        st.all([str],function(err, res){
+          if(err){
+            reject(err)
+          }else{
+            if(! res){
+              reject("aucun utilisateur trouvé !")
+              return ;
+            }
+            resolve(res);
+          }
+        })
+      }catch(e){
+        res.status(500).json({
+          status: 500,
+          message: "erreur interne",
+          details: (e || "Erreur inconnue").toString()
+         })
+      }
 
 
+    })
+  }
 }
-
 exports.default = Users;
 
