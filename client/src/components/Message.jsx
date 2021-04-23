@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width:"90%",
     maxWidth: 'auto',
-    minWidth: 1200,
+    minWidth: 800,
     //maxHeight: 200 //prob
 
   },
@@ -60,17 +60,23 @@ export default function Message({props}) {
     <Card id="message" className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
+          <div>
+            <Avatar aria-label="recipe" className={classes.avatar}>
             {JSON.parse(props).user}
-          </Avatar>
+            </Avatar>
+            <h2>{JSON.parse(props).firstname+" "+ JSON.parse(props).lastname}</h2>
+          </div>
+          
+          
         }
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
+        
         title={JSON.parse(props).text}//{props.title}
-        subheader={moment(JSON.parse(props).date).fromNow()} regler
+        subheader={moment(JSON.parse(props).date).fromNow()} //regler
       />
       <CardMedia
         className={classes.media}
@@ -78,7 +84,7 @@ export default function Message({props}) {
         title={JSON.parse(props).image_title}
       />
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography variant="body2" color="a modifier !" component="p">
           {JSON.parse(props).likes}
         </Typography>
       </CardContent>

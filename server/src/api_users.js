@@ -27,7 +27,7 @@ function init(db) {
                 });
                 return;
             }
-            if(! await users.exists(login)) {
+            if (! await users.exists(login)) {
                 res.status(400).json({
                     status: 400,
                     message: "User not found"
@@ -36,14 +36,14 @@ function init(db) {
             }
 
             let userid; //declaration en dehors du try
-            try{
+            try {
                 userid = await users.checkpassword(login, password)
-            }catch(e){
+            } catch (e) {
                 res.status(403).send("login et/ou le mot de passe invalide(s)");
                 return; //ne pas oublier le return !
             }
-                
-            
+
+
             if (userid) {
                 // Avec middleware express-session
                 req.session.regenerate(function (err) {
@@ -56,16 +56,23 @@ function init(db) {
                     else {
                         // C'est bon, nouvelle session créée
                         req.session.userid = userid;
-                        console.log('session id=', req.session.id, '  créée pour session.userid=', req.session.userid)
-                        /*
-                        console.log("-->session_id=", req.session.id)
-                        console.log("-->session_userid=", req.session.userid)
-                        console.log("-->session", req.session)
-                        */
-                        res.status(200).json({
-                            status: 200,
-                            message: "Login et mot de passe accepté"
-                        });
+                        let u_data
+                        
+                        users.get(userid)
+                        .then((data) => { 
+                            u_data=data; console.log("api_users--> u_data= ", u_data)
+                            req.session.user_data = u_data;
+
+                            console.log('session id=', req.session.id, '  créée pour session.user_data=', req.session.user_data) //test
+
+                            res.status(200).json({
+                                status: 200,
+                                message: "Login et mot de passe accepté"
+                            });
+                        }) 
+                        .catch((err) => {res.status(500).send(err); return})
+
+                        
                     }
                 });
                 return;
@@ -87,29 +94,29 @@ function init(db) {
             });
         }
     });
-    
+
     //get user by id
     router
         .route("/user/:user_id(\\d+)")
         .get(async (req, res) => {
-        try {
-            const user = await users.get(req.params.user_id);
-            if (!user)
-                res.sendStatus(404);
-            else
-                res.status(201).send(user)
-        }
-        catch (e) {
-            res.status(500).send(e);
-        }
-    })
+            try {
+                const user = await users.get(req.params.user_id);
+                if (!user)
+                    res.sendStatus(404);
+                else
+                    res.status(201).send(user)
+            }
+            catch (e) {
+                res.status(500).send(e);
+            }
+        })
 
-    .delete((req, res, next) => res.send(`delete user ${req.params.user_id}`));
+        .delete((req, res, next) => res.send(`delete user ${req.params.user_id}`));
 
     //create user
     router.post("/user", (req, res) => {
         const { login, password, lastname, firstname } = req.body;
-        
+
         //console.log("req.body= "+JSON.stringify(req.body)) ///////test
 
         if (!login || !password || !lastname || !firstname) {
@@ -129,7 +136,7 @@ function init(db) {
             //const { user_id } = req.body;
             const userid = req.session.userid
             //erreur ?
-            if(!userid){
+            if (!userid) {
                 res.status(401).json({
                     //status: 400,
                     "message": "utilisateur non authentifié !"
@@ -146,16 +153,16 @@ function init(db) {
                 return;
             }
             */
-           /*
-            //est ce qu'il est conecté? non
-            if(! (req.session.user_id === user_id)  ){ //ou == pour alléger
-                res.status(400).json({
-                    status: 400,
-                    "message": "Utilisateur non connecté"
-                });
-                return;
-            }
-            */
+            /*
+             //est ce qu'il est conecté? non
+             if(! (req.session.user_id === user_id)  ){ //ou == pour alléger
+                 res.status(400).json({
+                     status: 400,
+                     "message": "Utilisateur non connecté"
+                 });
+                 return;
+             }
+             */
 
             //on le deconnecte
             req.session.destroy();
@@ -175,7 +182,7 @@ function init(db) {
             });
         }
     });
-    
+
 
     return router;
 }

@@ -65,7 +65,9 @@ class Users {
 
     return new Promise((resolve, reject) => {
 
-      var st = this.db.prepare("SELECT * FROM users WHERE rowid = ?")
+      //var st = this.db.prepare("SELECT * FROM users WHERE rowid = ?")
+      var st = this.db.prepare("SELECT login,firstname,lastname FROM users WHERE rowid = ?")//ne pas afficher le mot de passe !
+
       st.get([userid], function(err, res){
         if(err){
 

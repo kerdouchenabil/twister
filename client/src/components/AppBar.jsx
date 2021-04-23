@@ -13,7 +13,7 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import DehazeTwoToneIcon from '@material-ui/icons/DehazeTwoTone';
 import SupervisorAccountSharpIcon from '@material-ui/icons/SupervisorAccountSharp';
 
-import List_friends from "./List_friends"
+import ListFriends from "./ListFriends"
 
 const StyledMenu = withStyles({
   paper: {
@@ -102,7 +102,7 @@ export default function CustomizedMenus(props) {
           <ListItemText primary="Post" />
         </StyledMenuItem>
 
-        <StyledMenuItem onClick={() => { alert("Actualité !"); show_messages()}}>
+        <StyledMenuItem onClick={() => {show_messages()}}>
           <ListItemIcon>
             <DraftsIcon fontSize="small" />
           </ListItemIcon>
