@@ -44,8 +44,9 @@ class Login extends React.Component {
     api.post('/user/login',{"login": this.state.login,"password" : this.state.password},) 
     .then(response => {
         //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-        if(response.data.status == 200){
-          this.props.login()
+        if(response.status == 200){
+          this.props.login(response.data)
+          //console.log("LOGIN DATA: ", response.data)
         }
     }).catch( response => {
       //console.log(response); // à tester la première fois pour voir ce que retourne le serveur

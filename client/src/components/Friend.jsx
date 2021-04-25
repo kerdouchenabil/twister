@@ -81,7 +81,7 @@ export default function Friend({props, refresh}) {
         avatar={
           <div>
             <Avatar aria-label="recipe" className={classes.avatar}>
-            {JSON.parse(props).user}
+            {JSON.parse(props).userid}
             </Avatar>
             <h2>{JSON.parse(props).firstname+" "+ JSON.parse(props).lastname}</h2>
             <h4>{"login: " + JSON.parse(props).login}</h4>
@@ -98,7 +98,7 @@ export default function Friend({props, refresh}) {
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            color="secondary"
             onClick= {handleSubmit } ///
           >
             Supprimer

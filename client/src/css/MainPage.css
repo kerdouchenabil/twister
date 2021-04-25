@@ -47,6 +47,7 @@ body {
   }
 
 .header_container{
+	min-width: 800px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;

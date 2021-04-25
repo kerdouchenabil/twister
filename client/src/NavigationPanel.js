@@ -14,6 +14,8 @@ import Test from './components/Test'
 import Friend from "./components/Friend"
 import Post_message from "./components/Post_message"
 import './css/MainPage.css';
+import SearchBar from "material-ui-search-bar";
+
 import axios from 'axios';
 
 const api = axios.create({
@@ -28,7 +30,7 @@ class NavigationPanel extends React.Component {
     super(props);
     this.state = { "content": "messages" }
     //
-    this.user_data = this.get_user_data()
+    this.user_data = {}//this.get_user_data()
 
     this.messages = []
     this.friends = []
@@ -93,20 +95,21 @@ class NavigationPanel extends React.Component {
         if (response.status == '200') {
           
           this.user_data = response.data //liste des messages
-          console.log("------------->", this.user_data)
+          console.log("get_user_data--> ", this.user_data)
           return response.data // a verifier
         }
       }).catch(response => {
-        //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-        alert("pas de user_data à récuperer !")
+        console.log("get_user_data catch: ", response); // à tester la première fois pour voir ce que retourne le serveur
+        //alert("pas de user_data à récuperer !")
       });
   }
 
   render() {
-    const { login, logout, signup, isConnected } = this.props;
+    const { login, logout, signup, isConnected, user_data } = this.props;
 
 
     return <div>
+
       {!isConnected && <Login login={login} />}
 
       {isConnected &&
@@ -124,7 +127,12 @@ class NavigationPanel extends React.Component {
             </div>
 
             <div>
-              <h1> {/*this.user_data.firstname+" "+this.user_data.lastname*/ "Anonyme"} </h1>
+              
+              {isConnected &&
+                <h1>
+                  {user_data.firstname+" "+user_data.lastname} 
+                </h1>
+              }
             </div>
 
             <div>

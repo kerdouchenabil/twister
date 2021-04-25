@@ -65,10 +65,10 @@ function init(db) {
 
                             console.log('session id=', req.session.id, '  créée pour session.user_data=', req.session.user_data) //test
 
-                            res.status(200).json({
-                                status: 200,
-                                message: "Login et mot de passe accepté"
-                            });
+                            res.status(200).json(
+                                //status: 200,
+                                data //renvoi les données de l'utilisateur
+                            );
                         }) 
                         .catch((err) => {res.status(500).send(err); return})
 

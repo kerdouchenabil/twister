@@ -15,13 +15,15 @@ import logo from './twister_anim.gif';
 class MainPage extends React.Component {
     constructor(props){
         super(props);
-        this.state = {isConnected : false, currentPage : "login"};
+        this.state = {isConnected : false, currentPage : "login", user_data: {} };
+        this.user_data = {}
         //this.getConnected = this.getConnected.bind(this);
     }
-    setConnected = () => {
+    setConnected = (data) => {
         this.setState({
           isConnected: true,
           currentPage: 'login',
+          user_data: data
         });
       }
     
@@ -42,7 +44,7 @@ class MainPage extends React.Component {
       }
     
     render() {
-        const { isConnected, currentPage } = this.state;
+        const { isConnected, currentPage, user_data } = this.state;
     
         return <div>
 
@@ -64,7 +66,8 @@ class MainPage extends React.Component {
               currentPage === 'login' &&
               <NavigationPanel
                 isConnected={isConnected}
-                login={() => { this.setConnected() }}  
+                user_data={user_data}
+                login={(data) => { this.setConnected(data) }}  
                 logout={() => { this.setLogout() }}  
                 signup={() => { this.signup() }}
                 signin={() => { this.signin() }}
