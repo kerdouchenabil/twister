@@ -78,11 +78,11 @@ class NavigationPanel extends React.Component {
         if (response.status == '200') {
           
           this.friends = response.data //liste des messages
-          console.log("------------->", this.friends)
+          //this.showfriends();
         }
       }).catch(response => {
-        //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-        alert("pas de messages à récuperer !")
+        console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+        //alert("pas de friends à récuperer !")
       });
   }
 
@@ -167,7 +167,7 @@ class NavigationPanel extends React.Component {
         // eslint-disable-next-line react/jsx-pascal-case
         <div width="100" p={1} my={0.5}>
           {this.refresh_friends()}
-          {this.friends.map((item, index) => <Friend key={index} props={JSON.stringify(item)} />)}
+          {this.friends.map((item, index) => <Friend key={index} props={JSON.stringify(item)} refresh={()=>this.show_friends()}/>)}
         </div>
       }
 

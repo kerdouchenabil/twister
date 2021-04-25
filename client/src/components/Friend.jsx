@@ -15,6 +15,8 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Button } from '@material-ui/core';
+import axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,13 +43,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Friend({props}) {
+export default function Friend({props, refresh}) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  let affiche_supprime = false
+
+ const handleSubmit = (event) =>{
+        
+    event.preventDefault();
+    const api = axios.create({
+        baseURL : '/api/',
+        timeout : 1000,
+        headers : {'X-Custom-Header' : 'foobar'}
+        });
+    api.delete('/friends/'+JSON.parse(props).userid) 
+      .then(response => {
+        console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+        if(response.status == 200){
+          console.log(response);
+          affiche_supprime = true
+          alert("Ami supprimé !")
+          refresh(); /////////////////  ne marche pas !
+        }
+
+       });
+
+  }
 
   return (
     <Card className={classes.root}>
@@ -58,6 +84,8 @@ export default function Friend({props}) {
             {JSON.parse(props).user}
             </Avatar>
             <h2>{JSON.parse(props).firstname+" "+ JSON.parse(props).lastname}</h2>
+            <h4>{"login: " + JSON.parse(props).login}</h4>
+            { affiche_supprime && <h3>Supprimé</h3>}
           </div>
         }
         
@@ -66,12 +94,15 @@ export default function Friend({props}) {
       />
       {/* card content supprimé ici */}
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
+      <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick= {handleSubmit } ///
+          >
+            Supprimer
+          </Button>
         
       </CardActions>
       

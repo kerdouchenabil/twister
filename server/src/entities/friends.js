@@ -67,7 +67,7 @@ class Friends {
       async list_friends(id_from){
         let _this = this
         return new Promise((resolve,reject)=>{
-          const st = _this.db.prepare("SELECT u.firstname, u.lastname FROM friends f,users u  WHERE f.id_from = ? AND f.id_to = u.rowid ")
+          const st = _this.db.prepare("SELECT u.rowid as userid,u.login , u.firstname, u.lastname FROM friends f,users u  WHERE f.id_from = ? AND f.id_to = u.rowid ")
           st.all(id_from,function(err,res){
             if(err){
               reject(err)

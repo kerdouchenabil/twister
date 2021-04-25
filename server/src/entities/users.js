@@ -142,7 +142,7 @@ class Users {
       try{
         str = str0.toLowerCase()
         str = "%"+str+"%"
-        var st = this.db.prepare("SELECT rowid as userid,login ,firstname,lastname from users where LOWER(login) like ?  UNION  SELECT rowid as userid,login ,firstname,lastname from users where LOWER(lastname) like ?    UNION    SELECT rowid as userid,login ,firstname,lastname from users where LOWER(firstname) like ?")
+        var st = this.db.prepare("SELECT rowid as userid,login ,firstname,lastname from users where LOWER(firstname)  like ?  UNION  SELECT rowid as userid,login ,firstname,lastname from users where LOWER(lastname) like ?    UNION    SELECT rowid as userid,login ,firstname,lastname from users where LOWER(login)  like ?")
         st.all([str],function(err, res){
           if(err){
             reject(err)
