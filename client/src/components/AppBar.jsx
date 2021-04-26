@@ -13,6 +13,7 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import DehazeTwoToneIcon from '@material-ui/icons/DehazeTwoTone';
 import SupervisorAccountSharpIcon from '@material-ui/icons/SupervisorAccountSharp';
 import Avatar from '@material-ui/core/Avatar';
+import SearchIcon from '@material-ui/icons/Search';
 
 
 import ListFriends from "./ListFriends"
@@ -51,7 +52,7 @@ const StyledMenuItem = withStyles((theme) => ({
 
 export default function CustomizedMenus(props) {
 
-  const { show_messages, show_friends, show_post_message } = props;
+  const { show_profil, show_messages, show_friends, show_post_message, search } = props;
 
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -91,7 +92,7 @@ export default function CustomizedMenus(props) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       > 
-        <StyledMenuItem onClick={() => { alert("Profil !"); }}>
+        <StyledMenuItem onClick={() => { show_profil() }}>
           <ListItemIcon>
             <InboxIcon fontSize="small" />
           </ListItemIcon>

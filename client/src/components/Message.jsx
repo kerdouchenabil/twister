@@ -16,6 +16,8 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import moment from 'moment'
+import DeleteIcon from '@material-ui/icons/Delete';
+import CommentIcon from '@material-ui/icons/Comment';
 
 import { sizing } from '@material-ui/system';
 
@@ -47,6 +49,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Message({props}) {
+
+  const { delete_message, show_profil } = props;
 
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
@@ -89,12 +93,19 @@ export default function Message({props}) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
+
         <IconButton aria-label="like" onClick={() => { alert('Liked !') }}>
           <FavoriteIcon />
         </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
+
+        <IconButton aria-label="delete" onClick={() => { alert('deleted !') ; /* delete_message() ; show_profil() */ }}>
+          <DeleteIcon />
         </IconButton>
+
+        <IconButton aria-label="comment" onClick={() => { alert('type your comment !') ; /* comment_message() ; show_profil() */ }}>
+          <CommentIcon />
+        </IconButton>
+
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,

@@ -182,6 +182,8 @@ function init(db) {
             });
         }
     });
+    
+    
     router.get("/user/search/:string",async (req, res) => {
         const userid = req.session.userid
         //erreur ?
@@ -201,7 +203,7 @@ function init(db) {
                     if(!ser)
                         res.sendStatus(404);
                     else
-                        res.status(201).send(ser);
+                        res.status(200).send(ser);
                 }
 
             }

@@ -14,7 +14,11 @@ import Test from './components/Test'
 import Friend from "./components/Friend"
 import Post_message from "./components/Post_message"
 import './css/MainPage.css';
-import SearchBar from "material-ui-search-bar";
+import Input from '@material-ui/core/Input';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+import SearchBar from "./components/SearchBar"
+
 
 import axios from 'axios';
 
@@ -37,6 +41,20 @@ class NavigationPanel extends React.Component {
     this.my_messages = []
   }
 
+  refresh_my_messages(){
+    api.get("/messages/of/0:1000000") // user_id=0 pour mes messages (session)
+    .then(response => {
+      console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+      if (response.status == '200') {
+        this.my_messages = response.data //liste des messages
+        console.log("------------->", this.my_messages)
+      }
+    }).catch(response => {
+      //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+      alert("Vous n'avez posté aucun message !")
+    });
+  }
+
   show_friends() {
     this.refresh_friends();
     this.setState({
@@ -54,6 +72,13 @@ class NavigationPanel extends React.Component {
     this.refresh_messages();
     this.setState({
       content: "messages",
+    });
+  }
+
+  show_profil(){
+    this.refresh_my_messages();
+    this.setState({
+      content: "profil",
     });
   }
 
@@ -123,6 +148,7 @@ class NavigationPanel extends React.Component {
 
             <div>
               {isConnected && <AppBar
+                show_profil={() => { this.show_profil() }}
                 show_messages={() => { this.show_messages() }}
                 show_friends={() => { this.show_friends() }}
                 show_post_message={() => { this.show_post_message() }}
@@ -136,6 +162,10 @@ class NavigationPanel extends React.Component {
                   {user_data.firstname+" "+user_data.lastname} 
                 </h1>
               }
+            </div>
+
+            <div>
+              <SearchBar />
             </div>
 
             <div>
