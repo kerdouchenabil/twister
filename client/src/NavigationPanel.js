@@ -34,6 +34,7 @@ class NavigationPanel extends React.Component {
 
     this.messages = []
     this.friends = []
+    this.my_messages = []
   }
 
   show_friends() {
@@ -85,9 +86,10 @@ class NavigationPanel extends React.Component {
       }).catch(response => {
         console.log(response); // à tester la première fois pour voir ce que retourne le serveur
         //alert("pas de friends à récuperer !")
-      });
+    });
   }
 
+  /*
   get_user_data(){
     api.get("/users/0") 
       .then(response => {
@@ -103,6 +105,7 @@ class NavigationPanel extends React.Component {
         //alert("pas de user_data à récuperer !")
       });
   }
+  */
 
   render() {
     const { login, logout, signup, isConnected, user_data } = this.props;
@@ -166,6 +169,16 @@ class NavigationPanel extends React.Component {
         <div width="100" p={1} my={0.5}>
           {this.refresh_messages()}
           {this.messages.map((item, index) => <Message key={index} props={JSON.stringify(item)} />)}
+        </div>
+      }
+
+
+      {
+        isConnected && this.state.content == "profil" &&
+        // eslint-disable-next-line react/jsx-pascal-case
+        <div width="100" p={1} my={0.5}>
+          {this.refresh_my_messages()}
+          {this.my_messages.map((item, index) => <Message key={index} props={JSON.stringify(item)} />)}
         </div>
       }
 

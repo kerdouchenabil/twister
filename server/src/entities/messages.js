@@ -77,6 +77,42 @@ class Messages {
         return "list messages error !"
       }
     }
+
+
+    //---------------------- list messages of one user -----------------------
+    async list_of(max_time_msg, user_id) {
+      //valeurs par defaut:
+      let max = max_time_msg // IMPORTATANT: MAX_TIME_MSG EN MINUTES !
+      if(!max){
+        max = 10 // par defaut les 10 dernieres minutes
+      }
+      let userid = user_id
+
+      let _this = this
+      console.log("debut message listing of one user: max_time=", max, "userid=", userid) //affichage test
+
+      try{
+        let now = new Date(Date.now())
+
+        return new Promise((resolve, reject) => {
+          _this.db.find(
+            {date:{$gt:new Date(now-max*60*1000)}},
+            {user : userid},
+            function(err,docs){ //max dernieres minutes 
+            if(err){
+              reject(err)
+            }else{
+              resolve(docs)
+            }
+          });
+        });
+      }catch(e){
+        return "list messages error !"
+      }
+    }
+
+
+
     // like message 
     async like(id_msg){
 
