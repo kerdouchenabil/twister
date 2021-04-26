@@ -13,6 +13,7 @@ import Test from './components/Test'
 //import List_friends from "./components/List_friends"
 import Friend from "./components/Friend"
 import Post_message from "./components/Post_message"
+import MyMessage from "./components/MyMessage"
 import './css/MainPage.css';
 import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
@@ -208,7 +209,7 @@ class NavigationPanel extends React.Component {
         // eslint-disable-next-line react/jsx-pascal-case
         <div width="100" p={1} my={0.5}>
           {this.refresh_my_messages()}
-          {this.my_messages.map((item, index) => <Message key={index} props={JSON.stringify(item)} />)}
+          {this.my_messages.map((item, index) => <MyMessage key={index} props={JSON.stringify(item)} />)}
         </div>
       }
 

@@ -40,6 +40,7 @@ class Messages {
     }
 
 
+
     //---------------------- list messages of all users -----------------------
     async list_all(max_time_msg, only_friends_msg) {
       //valeurs par defaut:
@@ -63,17 +64,33 @@ class Messages {
         let now = new Date(Date.now())
 
         return new Promise((resolve, reject) => {
-          _this.db.find({date:{$gt:new Date(now-max*60*1000)}},function(err,docs){ //max dernieres minutes 
-            //console.log("derniers messages:");
-            //console.log(docs);
+          
+          _this.db.find( {date:{$gt:new Date(now-max*60*1000)} }, function(err,docs){ //max dernieres minutes 
+            console.log("derniers messages:");
+            
             if(err){
               reject(err)
             }else{
-              resolve(docs)
+              
+              try{
+                docs.sort(function(a, b) {
+                  
+                  a = new Date(a.date);
+                  b = new Date(b.date);
+                  return a>b ? -1 : a<b ? 1 : 0;
+              });
+                
+                console.log(docs);
+                resolve(docs)
+              }catch{
+                console.log("list messages error !!")
+              }
+              
             }
-          });
+          })
         });
       }catch(e){
+        console.log("----catch-----", e)
         return "list messages error !"
       }
     }
@@ -102,7 +119,22 @@ class Messages {
             if(err){
               reject(err)
             }else{
-              resolve(docs)
+
+              //trier le result
+              try{
+                docs.sort(function(a, b) {
+                  
+                  a = new Date(a.date);
+                  b = new Date(b.date);
+                  return a>b ? -1 : a<b ? 1 : 0;
+              });
+                
+                console.log(docs);
+                resolve(docs)
+              }catch{
+                console.log("messages error !!")
+              }
+
             }
           });
         });

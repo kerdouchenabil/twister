@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Message({props}) {
+export default function MyMessage({props}) {
 
   const { delete_message, show_profil } = props;
 
@@ -96,6 +96,10 @@ export default function Message({props}) {
 
         <IconButton aria-label="like" onClick={() => { alert('Liked !') }}>
           <FavoriteIcon />
+        </IconButton>
+
+        <IconButton aria-label="delete" onClick={() => { alert('deleted !') ; /* delete_message() ; show_profil() */ }}>
+          <DeleteIcon />
         </IconButton>
 
         <IconButton aria-label="comment" onClick={() => { alert('type your comment !') ; /* comment_message() ; show_profil() */ }}>
