@@ -3,15 +3,21 @@ const api = require('./api_users.js');
 const api_friends = require('./api_friends.js');
 const api_messages = require('./api_messages.js');
 
+express = require('express');
+const app = express()
+
 const sqlite3 = require('sqlite3').verbose();
 let db = new sqlite3.Database('db0.db');
-
+/*
+const bodyparser = require("body-parser");
+app.use(bodyparser.json({ limit: "30mb", extended: true }));
+app.use(bodyparser.urlencoded({ limit: "30mb", extended: true }));
+*/
 // Détermine le répertoire de base
 const basedir = path.normalize(path.dirname(__dirname));
 console.debug(`Base directory: ${basedir}`);
 
-express = require('express');
-const app = express()
+
 const session = require("express-session");
 //app.set('trust proxy', 1) //  si HTTPS //
 

@@ -5,73 +5,67 @@ import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import TextField from '@material-ui/core/TextField';
 import '../css/MainPage.css';
+import FileBase64 from 'react-file-base64';
 import axios from 'axios';
-/*
-handleSubmit = (event) =>{
 
-  event.preventDefault();
-  const api = axios.create({
-      baseURL : '/api/',
-      timeout : 1000,
-      headers : {'X-Custom-Header' : 'foobar'}
-      });
-  api.post('/user/login',{"login": this.state.login,"password" : this.state.password},) 
-  .then(response => {
-      //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-      if(response.data.status == 200){
-        this.props.login()
-      }
-  }).catch( response => {
-    //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-
-    alert("email/password incorrect !")
-      
-  });
-*/
-let formData = new FormData();
 
 
 class Post_message extends React.Component {
-  state = {
 
-    text : '',
-    file : '',
-    data:{}
-  }  
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: '',
+      image: '',
+      data: {}
+    }
+
+    this.handle_image = this.handle_image.bind(this);
+
+  }
+
+  handle_image = (image) => {
+    this.setState((old_state) => ({ ...this.old_state, image }))
+  }
+
+  hello() {
+    console.log(JSON.stringify(this.state))
+  }
+
+
   changeText = event => {
     const val = event.currentTarget.value;
     const val1 = event.currentTarget.type
-    this.setState({text : val})
+    this.setState({ ...this.state, text: val })
   }
   changeFile = event => {
     const val = event.currentTarget.value;
-    this.setState({file : val})
-    
-    formData.append('file', this.state.file);
+    this.setState({ image: val })
+
   }
 
-  handleSubmit = (event) =>{
-    
+  handleSubmit = (event) => {
+
     event.preventDefault();
     const api = axios.create({
-        baseURL : '/api/',
-        timeout : 1000,
-        headers : {'X-Custom-Header' : 'foobar'}
-        });
-    api.post('/messages',{"text": this.state.text,"file" : formData},) 
-    .then(response => {
+      baseURL: '/api/',
+      timeout: 1000,
+      headers: { 'X-Custom-Header': 'foobar' }
+    });
+    api.post('/messages', { "text": this.state.text, "file": this.state.image },)
+      .then(response => {
         console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-        if(response.status == 201){
+        if (response.status == 201) {
           alert("message posté avec succés !")
         }
-    }).catch( response => {
-      console.log(response.data.status); // à tester la première fois pour voir ce que retourne le serveur
-        
-    });
+      }).catch(response => {
+        console.log(response.status); // à tester la première fois pour voir ce que retourne le serveur
+
+      });
 
   }
 
-/// a supprimer plus tard
+  /// a supprimer plus tard
   useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {
@@ -94,48 +88,59 @@ class Post_message extends React.Component {
 
     return (
       <div>
-  
+
         <h1>
           Poster un message
         </h1>
-  
+
         <h3>Texte </h3>
-  
+
         <textarea id="story" name="story"
           rows="5" cols="33" value={this.state.text}
           onChange={this.changeText}>
-          
-          </textarea>
-        
+
+        </textarea>
+
         <h3>Fichier </h3>
-        <input
-        accept="image/*"
-        value={this.state.file}
-          onChange={this.changeFile}
-        id="contained-button-file"
-        multiple
-        type="file"
-      />
+
         <label htmlFor="icon-button-file">
-          <IconButton color="primary" aria-label="upload picture" component="span" >
+
+          <div id="filebase" style={{ display: 'none', }}>
+            <FileBase64
+              type="file"
+
+              multipe={false}
+              onDone={({ base64 }) => {
+                console.log(base64.length)
+                this.setState({ ...this.state, image: base64 })
+                //this.handle_image(base64)
+                this.hello()
+              }}
+            />
+          </div>
+
+          <IconButton color="primary" aria-label="upload picture" component="span" onClick={() => {
+            document.getElementById('filebase').firstChild.click()
+          }}>
+
             <PhotoCamera />
           </IconButton>
         </label>
-  
+
         <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              onClick= {this.handleSubmit }
-          >
-            Poster
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          onClick={this.handleSubmit}
+        >
+          Poster
           </Button>
-        
+
       </div>
-      
-      );
-    }
+
+    );
+  }
 }
 
 
