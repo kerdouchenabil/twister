@@ -21,7 +21,7 @@ import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 800,
+    minWidth: 400,
     paddingTop: '5%',
   },
   media: {

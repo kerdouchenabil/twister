@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width:"90%",
     maxWidth: 1200, //'auto'
-    minWidth: 800,
+    minWidth: 400,
     //maxHeight: 200 //prob
 
   },

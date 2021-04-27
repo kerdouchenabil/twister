@@ -15,6 +15,8 @@ import Friend from "./components/Friend"
 import User from "./components/User"
 import Post_message from "./components/Post_message"
 import MyMessage from "./components/MyMessage"
+import MyProfil from "./components/MyProfil"
+
 import './css/MainPage.css';
 import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
@@ -34,7 +36,7 @@ class NavigationPanel extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { "content": "messages", search_result:[], friends:[] }
+    this.state = { "content": "messages", search_result:[], friends:[], my_messages : [] }
     //
     this.user_data = {}//this.get_user_data()
 
@@ -52,7 +54,7 @@ class NavigationPanel extends React.Component {
     .then(response => {
       console.log(response); // à tester la première fois pour voir ce que retourne le serveur
       if (response.status == '200') {
-        this.my_messages = response.data //liste des messages
+        this.setState({my_messages : response.data}) //liste des messages
         console.log("------------->", this.my_messages)
       }
     }).catch(response => {
@@ -82,9 +84,9 @@ class NavigationPanel extends React.Component {
   }
 
   show_profil(){
-    this.refresh_my_messages();
+    //this.refresh_my_messages();
     this.setState({
-      content: "profil",
+      content: "MyProfil",
     });
   }
 
@@ -223,8 +225,15 @@ class NavigationPanel extends React.Component {
         isConnected && this.state.content == "profil" &&
         // eslint-disable-next-line react/jsx-pascal-case
         <div width="100" p={1} my={0.5}>
-          {this.refresh_my_messages()}
-          {this.my_messages.map((item, index) => <MyMessage key={index} props={JSON.stringify(item)} />)}
+          {this.state.my_messages.map((item, index) => <MyMessage key={index} props={JSON.stringify(item)} refresh={()=>this.refresh_my_messages()} />)}
+        </div>
+      }
+
+      {
+        isConnected && this.state.content == "MyProfil" &&
+        // eslint-disable-next-line react/jsx-pascal-case
+        <div width="100" p={1} my={0.5}>
+          { <MyProfil props={this.state.user_data} refresh={(data)=>this.setState(data)} />}
         </div>
       }
 
