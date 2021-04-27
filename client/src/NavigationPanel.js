@@ -12,6 +12,7 @@ import AppBar from './components/AppBar'
 import Test from './components/Test'
 //import List_friends from "./components/List_friends"
 import Friend from "./components/Friend"
+import User from "./components/User"
 import Post_message from "./components/Post_message"
 import MyMessage from "./components/MyMessage"
 import './css/MainPage.css';
@@ -33,13 +34,17 @@ class NavigationPanel extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { "content": "messages" }
+    this.state = { "content": "messages", search_result:[], friends:[] }
     //
     this.user_data = {}//this.get_user_data()
 
     this.messages = []
     this.friends = []
     this.my_messages = []
+  }
+
+  set_search_result(data){
+    this.setState({"content": "search_result", search_result:data})
   }
 
   refresh_my_messages(){
@@ -106,7 +111,7 @@ class NavigationPanel extends React.Component {
         console.log(response); // à tester la première fois pour voir ce que retourne le serveur
         if (response.status == '200') {
           
-          this.friends = response.data //liste des messages
+          this.setState({friends: response.data})  //liste des messages
           //this.showfriends();
         }
       }).catch(response => {
@@ -166,7 +171,9 @@ class NavigationPanel extends React.Component {
             </div>
 
             <div>
-              <SearchBar />
+              <SearchBar 
+                set_search = { (data) => {this.setState(data)} }
+              />
             </div>
 
             <div>
@@ -185,6 +192,14 @@ class NavigationPanel extends React.Component {
         // eslint-disable-next-line react/jsx-pascal-case
         <List_friends props={JSON.stringify({ "title": "titre du post", "avatar": "Z" })} />
       */}
+
+      {
+        this.state.content == "search_result" &&
+        <div>
+          <h3>RESULTAT DE LA RECHERCHE</h3>
+          {this.state.search_result.map((item, index) => <User key={index} props={JSON.stringify(item)} refresh={()=>this.show_friends()}/>)}
+        </div>
+      }
 
 
       {
@@ -218,8 +233,7 @@ class NavigationPanel extends React.Component {
         isConnected && this.state.content == "friends" &&
         // eslint-disable-next-line react/jsx-pascal-case
         <div width="100" p={1} my={0.5}>
-          {this.refresh_friends()}
-          {this.friends.map((item, index) => <Friend key={index} props={JSON.stringify(item)} refresh={()=>this.show_friends()}/>)}
+          {this.state.friends.map((item, index) => <Friend key={index} props={JSON.stringify(item)} refresh={()=>this.refresh_friends()} />)}
         </div>
       }
 

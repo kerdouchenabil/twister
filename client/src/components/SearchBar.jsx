@@ -11,11 +11,16 @@ import Input from '@material-ui/core/Input';
 import axios from 'axios';
 
 class SearchBar extends React.Component {
-  state = {
 
-    text : '',
-    data:{}
-  }   
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      text : '',
+      data: []
+    }  
+  }
+
   changeText = event => {
     const val = event.currentTarget.value;
     const val1 = event.currentTarget.type
@@ -30,11 +35,15 @@ class SearchBar extends React.Component {
         timeout : 1000,
         headers : {'X-Custom-Header' : 'foobar'}
         });
-    api.post("/user/search/nabil"+this.state.text) 
+    api.get("/user/search/"+this.state.text) 
     .then(response => {
-        console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+        //console.log("response=", response); // à tester la première fois pour voir ce que retourne le serveur
+        //console.log("text=", this.state.text)
         if(response.status == 200){
-          console.log("Resultats de la recherche pour le mot ",this.state.text, " : ", response)
+          
+          this.setState({data:response.data})
+          //console.log("Resultats de la recherche pour le mot ",this.state.text, "  data: ", this.state.data) //debug
+          this.props.set_search({"content": "search_result", search_result: this.state.data})
         }
     }).catch( response => {
       console.log(response); // à tester la première fois pour voir ce que retourne le serveur
