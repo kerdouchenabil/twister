@@ -135,10 +135,30 @@ function init(db_nosql, db) {
                 else
                     res.status(200).send(msg)
             } catch (error) {
+                console.log("catch")
                 res.status(500).send(error);
             }
 
 
+        })
+    router.route("/messages/delete/:message_id")
+        .delete(async (req, res)=>{
+            try{
+                if (!req.session.userid) {
+                    res.status(401).json({ message: "delete message: utilisateur non authentifié" });
+
+                    return;
+                }
+                const msg = await messages.delete(req.params.message_id);
+                if (!msg)
+                    res.sendStatus(404);
+                else
+                    res.status(200).send(msg)
+            } catch (error) {
+                res.status(500).send(error);
+            }
+
+            
         })
 
 

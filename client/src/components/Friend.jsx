@@ -67,7 +67,6 @@ export default function Friend({props, refresh}) {
         if(response.status == 200){
           console.log(response);
           affiche_supprime = true
-          alert("Ami supprimé !")
           refresh(); /////////////////  ne marche pas !
         }
 

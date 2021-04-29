@@ -180,7 +180,29 @@ class Messages {
 
         
     }
-
+    //delete mesage 
+    async delete (id_msg){
+      try {
+        let _this = this 
+        return new Promise((resolve,reject)=>{
+            try {
+              _this.db.remove({ _id: id_msg},function(err,doc) {
+                if(err){
+                  reject(err);
+                }else{
+                  resolve("deleted")
+                }
+              });
+            }catch(e){
+              reject(e.message)
+              return ;
+            }
+        });
+      }catch(e){
+        return "delete messaage error "
+      }
+    }
+  
 }
 
 exports.default = Messages;

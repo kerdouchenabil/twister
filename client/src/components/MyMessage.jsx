@@ -20,7 +20,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CommentIcon from '@material-ui/icons/Comment';
 
 import { sizing } from '@material-ui/system';
-
+import axios from 'axios';
 const useStyles = makeStyles((theme) => ({
   root: {
     width:"90%",
@@ -58,7 +58,50 @@ export default function MyMessage({props}) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const handleSubmit = (event) =>{
+        
+    event.preventDefault();
+    const api = axios.create({
+        baseURL : '/api/',
+        timeout : 1000,
+        headers : {'X-Custom-Header' : 'foobar'}
+        });
+    api.put('/messages/like/'+JSON.parse(props)._id) 
+      .then(response => {
+        console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+        if(response.status == 200){
+          console.log(response);
+          
+          alert("liked !")
+          //refresh(); /////////////////  ne marche pas !
+        }
 
+       });
+
+  }
+  const handleSubmitdelete = (event) =>{
+        
+    event.preventDefault();
+    const api = axios.create({
+        baseURL : '/api/',
+        timeout : 1000,
+        headers : {'X-Custom-Header' : 'foobar'}
+        });
+    api.delete('/messages/delete/'+JSON.parse(props)._id) 
+      .then(response => {
+  
+        console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+        if(response.status == 200){
+          alert("deleted !")
+          //refresh(); /////////////////  ne marche pas !
+        }
+
+       })
+       .catch(error =>{
+         console.log(error.message)
+       })
+
+  }
   return (
 
     <Card id="message" className={classes.root}>
@@ -94,11 +137,11 @@ export default function MyMessage({props}) {
       </CardContent>
       <CardActions disableSpacing>
 
-        <IconButton aria-label="like" onClick={() => { alert('Liked !') }}>
+        <IconButton aria-label="like" onClick={handleSubmit}>
           <FavoriteIcon />
         </IconButton>
 
-        <IconButton aria-label="delete" onClick={() => { alert('deleted !') ; /* delete_message() ; show_profil() */ }}>
+        <IconButton aria-label="delete" onClick={handleSubmitdelete}>
           <DeleteIcon />
         </IconButton>
 
