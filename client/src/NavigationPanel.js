@@ -50,16 +50,16 @@ class NavigationPanel extends React.Component {
   }
 
   refresh_my_messages(){
-    api.get("/messages/of/0:1000000") // user_id=0 pour mes messages (session)
+    api.get("/messages/of/0:10000000000") // user_id=0 pour mes messages (session)
     .then(response => {
       console.log(response); // à tester la première fois pour voir ce que retourne le serveur
       if (response.status == '200') {
         this.setState({my_messages : response.data}) //liste des messages
-        console.log("------------->", this.my_messages)
+        //console.log("------------->", this.my_messages)
       }
     }).catch(response => {
       //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-      alert("Vous n'avez posté aucun message !")
+      //alert("Vous n'avez posté aucun message !")
     });
   }
 
@@ -98,11 +98,11 @@ class NavigationPanel extends React.Component {
         if (response.status == '200') {
           
           this.messages = response.data //liste des messages
-          console.log("------------->", this.messages)
+          //console.log("------------->", this.messages)
         }
       }).catch(response => {
         //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-        alert("pas de messages à récuperer !")
+        //alert("pas de messages à récuperer !")
       });
 
   }
@@ -233,7 +233,7 @@ class NavigationPanel extends React.Component {
         isConnected && this.state.content == "MyProfil" &&
         // eslint-disable-next-line react/jsx-pascal-case
         <div width="100" p={1} my={0.5}>
-          { <MyProfil props={this.state.user_data} refresh={(data)=>this.setState(data)} />}
+          { <MyProfil props={this.state.user_data} /*refresh={(data)=>this.setState(data)}*/ refresh={()=>this.refresh_my_messages()} />}
         </div>
       }
 

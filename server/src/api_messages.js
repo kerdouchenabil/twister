@@ -166,9 +166,12 @@ function init(db_nosql, db) {
     router.route("/messages/of/:user(\\d+):max")
         .get(async (req, res) => { // pas de body, utiliser url query
             try {
-                console.log('----------------------------je suis sssss')
                 let user = req.params.user
                 let max_time = req.params.max
+
+                if(!max_time){
+                    max_time = 10000000000
+                }
 
                 console.log("max_time=", max_time, "  user=", user) //test
 
@@ -194,7 +197,6 @@ function init(db_nosql, db) {
                     // récuperer l'id user de la session
                     userid = req.session.userid /// voir si suffisant (quand on aura  mongoose  pour les sessions)
                 }
-                console.log('dddddddddddddddddddddddddddd=', userid)
                 // si user not exists
                 try{
                     if(! await users.exists_id(userid)) { 

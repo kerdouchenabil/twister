@@ -48,16 +48,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MyMessage({props}) {
+export default function MyMessage({props,refresh}) {
 
-  const { delete_message, show_profil } = props;
+  //const { delete_message, show_profil } = props;
 
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [liked, setLiked] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const handleLikeClick = () => {
+    setLiked(!liked);
+  };
+
   const handleSubmit = (event) =>{
         
     event.preventDefault();
@@ -70,10 +76,9 @@ export default function MyMessage({props}) {
       .then(response => {
         console.log(response); // à tester la première fois pour voir ce que retourne le serveur
         if(response.status == 200){
-          console.log(response);
-          
-          alert("liked !")
-          //refresh(); /////////////////  ne marche pas !
+          //console.log(response);
+          handleLikeClick()
+          refresh();
         }
 
        });
@@ -92,8 +97,10 @@ export default function MyMessage({props}) {
   
         console.log(response); // à tester la première fois pour voir ce que retourne le serveur
         if(response.status == 200){
-          alert("deleted !")
-          //refresh(); /////////////////  ne marche pas !
+
+
+          
+          refresh(); /////////////////  ne marche pas !
         }
 
        })
@@ -136,10 +143,14 @@ export default function MyMessage({props}) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-
-        <IconButton aria-label="like" onClick={handleSubmit}>
-          <FavoriteIcon />
-        </IconButton>
+        {
+          ( !liked ) &&
+          
+          <IconButton aria-label="like" onClick={handleSubmit}>
+            <FavoriteIcon />
+          </IconButton>
+        }
+        
 
         <IconButton aria-label="delete" onClick={handleSubmitdelete}>
           <DeleteIcon />

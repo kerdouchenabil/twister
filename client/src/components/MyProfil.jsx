@@ -39,7 +39,7 @@ class MyProfil extends React.Component {
 
 
   refresh_my_messages(){
-    api.get("/messages/of/0:1000000") // user_id=0 pour mes messages (session)
+    api.get("/messages/of/0:10000000000") // user_id=0 pour mes messages (session)
     .then(response => {
       console.log(response); // à tester la première fois pour voir ce que retourne le serveur
       if (response.status == '200') {

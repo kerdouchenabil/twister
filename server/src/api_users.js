@@ -104,7 +104,7 @@ function init(db) {
                 if (!user)
                     res.sendStatus(404);
                 else
-                    res.status(201).send(user)
+                    res.status(200).send(user)
             }
             catch (e) {
                 res.status(500).send(e);
