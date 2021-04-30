@@ -104,7 +104,7 @@ function init(db_nosql, db) {
 
                 console.log('list messages: session id=', req.session.id, '  session.userid=', req.session.userid) // test
 
-                messages.list_all(max_time, friends_only) //utiliser  x = await fonction... aulieu des .then 
+                messages.list_all(max_time, friends_only,userid) //utiliser  x = await fonction... aulieu des .then 
                     .then((msgs) => res.status(200).send(msgs)) //pas la peine de retourner l'id, le status suffit
                     .catch((err) => res.status(500).send(err));
             } catch (error) {

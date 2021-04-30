@@ -1,11 +1,14 @@
+const Friends = require("./entities/friends.js");
+const { default: friends } = require("./friends.js");
 class Messages {
-    constructor(db) {
+    constructor(db,db_sql) {
       this.db = db
+      this.db_sql = db_sql
       // creation de la table messages dans la BD mongodb
       //db.messages
-
+      const friends = new Friends.default(db);
     }
-
+    
 
     async create(user_id, firstname_msg, lastname_msg, text_msg, file_msg) {
       let _this = this
@@ -42,7 +45,7 @@ class Messages {
 
 
     //---------------------- list messages of all users -----------------------
-    async list_all(max_time_msg, only_friends_msg) {
+    async list_all(max_time_msg, only_friends_msg,userid) {
       //valeurs par defaut:
       let max = max_time_msg // IMPORTATANT: MAX_TIME_MSG EN MINUTES !
       if(!max){
@@ -50,7 +53,7 @@ class Messages {
       }
       let only_friends = only_friends_msg
       if(!only_friends_msg){
-        only_friends_msg = false // par defaut (si undefined)
+        only_friends = false // par defaut (si undefined)
       }
 
       let _this = this
@@ -58,41 +61,92 @@ class Messages {
 
       // TODO : if only_friends = true
       //
-
-      //if only friends = false
-      try{
-        let now = new Date(Date.now())
-
-        return new Promise((resolve, reject) => {
+      if (only_friends){
+        try{
+          let now = new Date(Date.now())
           
-          _this.db.find( {date:{$gt:new Date(now-max*60*1000)} }, function(err,docs){ //max dernieres minutes 
-            console.log("derniers messages:");
+          return new Promise((resolve, reject) => {
             
-            if(err){
-              reject(err)
-            }else{
+            _this.db.find( {date:{$gt:new Date(now-max*60*1000)} }, function(err,docs){ //max dernieres minutes 
+              console.log("derniers messages:");
               
-              try{
-                docs.sort(function(a, b) {
-                  
-                  a = new Date(a.date);
-                  b = new Date(b.date);
-                  return a>b ? -1 : a<b ? 1 : 0;
-              });
+              if(err){
+                reject(err)
+              }else{
                 
-                console.log(docs);
-                resolve(docs)
-              }catch{
-                console.log("list messages error !!")
+                try{
+
+                  await friends.list_friends(userid)
+                  .then((got) => {
+
+                    let result = docs.filter(msg => $.each(got, function(i, obj) {
+                      obj.userid == msg.user
+                     }))
+
+                    result.sort(function(a, b) {
+                    
+                      a = new Date(a.date);
+                      b = new Date(b.date);
+                      return a>b ? -1 : a<b ? 1 : 0;
+                  })
+                  
+           
+                  console.log(docs);
+                  resolve(docs)
+                  
+                }).catch((err) =>reject(err))  
+                  
+                  
+                }catch{
+                  console.log("list messages error !!")
+                }
+                
               }
-              
-            }
-          })
-        });
-      }catch(e){
-        console.log("----catch-----", e)
-        return "list messages error !"
+            })
+          });
+        }catch(e){
+          console.log("----catch-----", e)
+          return "list messages error !"
+        }    
       }
+        
+      else{
+        try{
+          let now = new Date(Date.now())
+  
+          return new Promise((resolve, reject) => {
+            
+            _this.db.find( {date:{$gt:new Date(now-max*60*1000)} }, function(err,docs){ //max dernieres minutes 
+              console.log("derniers messages:");
+              
+              if(err){
+                reject(err)
+              }else{
+                
+                try{
+                  docs.sort(function(a, b) {
+                    
+                    a = new Date(a.date);
+                    b = new Date(b.date);
+                    return a>b ? -1 : a<b ? 1 : 0;
+                });
+                  
+                  console.log(docs);
+                  resolve(docs)
+                }catch{
+                  console.log("list messages error !!")
+                }
+                
+              }
+            })
+          });
+        }catch(e){
+          console.log("----catch-----", e)
+          return "list messages error !"
+        }
+      }
+      //if only friends = false
+
     }
 
 
