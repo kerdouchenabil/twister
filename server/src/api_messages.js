@@ -107,7 +107,6 @@ function init(db_nosql, db) {
                 console.log('list messages: session id=', req.session.id, '  session.userid=', req.session.userid) // test
                 let friends_list = []
                 await friends.list_friends(userid).then((f)=>friends_list=f).catch((err)=>console.log("liste des friends introuvable !!!"))
-                console.log("ilah9ed ar dina !")
 
                 messages.list_all(max_time, friends_only,userid)
                     .then((msgs)=>{
@@ -116,12 +115,8 @@ function init(db_nosql, db) {
                             try{
                                 let f_ids = []
                                 friends_list.forEach(element => f_ids.push(element.userid));
-                                console.log("f_ids= ", f_ids)
                                 let friends_msgs = []
                                 for (var i in msgs) {
-                                    console.log("============================================= !")
-                                    console.log("message: ", msgs[i])
-                                    console.log("______________________________________(((((((",f_ids.includes(msgs[i].user))
                                     if(f_ids.includes(msgs[i].user)){
                                         friends_msgs.push(msgs[i])
                                     }
@@ -136,9 +131,6 @@ function init(db_nosql, db) {
                                 res.status(500).send(err)
                             }
                         
-
-                         
-                           
                          }
                          res.status(200).send(msgs) 
                      })
@@ -250,7 +242,7 @@ function init(db_nosql, db) {
 
                 console.log('list messages: session id=', req.session.id, '  session.userid=', req.session.userid) // test
 
-                messages.list_of(userid, max_time) //utiliser  x = await fonction... aulieu des .then 
+                messages.list_of(userid ,  max_time ) //utiliser  x = await fonction... aulieu des .then 
                     .then((msgs) => res.status(200).send(msgs)) //pas la peine de retourner l'id, le status suffit
                     .catch((err) => res.status(500).send(err));
             } catch (error) {

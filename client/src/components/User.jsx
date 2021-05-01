@@ -21,7 +21,7 @@ import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 800,
+    minWidth: 400,
     paddingTop: '5%',
   },
   media: {
@@ -47,33 +47,6 @@ export default function User({props}) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
-  let affiche_ajoute = false
-
- const handleSubmit = (event) =>{
-        
-    event.preventDefault();
-    const api = axios.create({
-        baseURL : '/api/',
-        timeout : 1000,
-        headers : {'X-Custom-Header' : 'foobar'}
-        });
-    api.post('/friends/'+JSON.parse(props).userid) 
-      .then(response => {
-        console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-        if(response.status == 200){
-          console.log(response);
-          affiche_ajoute = true
-          alert("Ami ajouté !")
-          props.refresh(); /////////////////  ne marche pas !
-        }
-
-       });
-
-  }
 
   return (
     <Card className={classes.root}>
@@ -85,26 +58,12 @@ export default function User({props}) {
             </Avatar>
             <h2>{JSON.parse(props).firstname+" "+ JSON.parse(props).lastname}</h2>
             <h4>{"login: " + JSON.parse(props).login}</h4>
-            { affiche_ajoute && <h3>Supprimé</h3>}
           </div>
         }
         
         title=""
         subheader=""
       />
-      {/* card content supprimé ici */}
-      <CardActions disableSpacing>
-      <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick= {handleSubmit } ///
-          >
-            Follow
-          </Button>
-        
-      </CardActions>
       
     </Card>
   );

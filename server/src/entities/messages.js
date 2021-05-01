@@ -153,11 +153,14 @@ class Messages {
     //---------------------- list messages of one user -----------------------
     async list_of(max_time_msg, user_id) {
       //valeurs par defaut:
-      let max = max_time_msg // IMPORTATANT: MAX_TIME_MSG EN MINUTES !
+      let max = 10000000000000 // IMPORTATANT: MAX_TIME_MSG EN MINUTES !
       if(!max){
         max = 10 // par defaut les 10 dernieres minutes
       }
-      let userid = user_id
+      const words = user_id.split(':');
+      console.log("word 0  ", words[0]);
+      console.log("word 1  ", words[1]);
+      let userid = words[1]
 
       let _this = this
       console.log("debut message listing of one user: max_time=", max, "userid=", userid) //affichage test

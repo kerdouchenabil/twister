@@ -16,6 +16,7 @@ import User from "./components/User"
 import Post_message from "./components/Post_message"
 import MyMessage from "./components/MyMessage"
 import MyProfil from "./components/MyProfil"
+import UserProfil from "./components/UserProfil"
 
 import './css/MainPage.css';
 import Input from '@material-ui/core/Input';
@@ -200,7 +201,6 @@ class NavigationPanel extends React.Component {
         </div>
       }
 
-
       {/*
         this.state.content == "friends" &&
         // eslint-disable-next-line react/jsx-pascal-case
@@ -251,6 +251,13 @@ class NavigationPanel extends React.Component {
         </div>
       }
 
+      {
+        isConnected && this.state.content == "xxxMyProfil" &&
+        // eslint-disable-next-line react/jsx-pascal-case
+        <div width="100" p={1} my={0.5}>
+          { <UserProfil props={this.state.user_data} /*refresh={(data)=>this.setState(data)}*/ refresh={()=>this.refresh_my_messages()} />}
+        </div>
+      }
 
       {
         isConnected && this.state.content == "friends" &&
