@@ -22,6 +22,7 @@ import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import SearchBar from "./components/SearchBar"
+import SwitchOnlyFriends from "./components/SwitchOnlyFriends"
 
 
 import axios from 'axios';
@@ -39,10 +40,21 @@ class NavigationPanel extends React.Component {
     this.state = { "content": "messages", search_result:[], friends:[], my_messages : [] }
     //
     this.user_data = {}//this.get_user_data()
-
+    this.only_friends = true
+    this.MAX_MSG_DATE = 100000000000
+    this.refresh_messages(this.MAX_MSG_DATE, this.only_friends)
+    
     this.messages = []
+    /*
     this.friends = []
     this.my_messages = []
+    */
+  }
+
+  switch_change(val){
+    this.only_friends = val
+    this.refresh_messages()
+    console.log("onlyyyyyy = ", this.only_friends)
   }
 
   set_search_result(data){
@@ -57,8 +69,8 @@ class NavigationPanel extends React.Component {
         this.setState({my_messages : response.data}) //liste des messages
         //console.log("------------->", this.my_messages)
       }
-    }).catch(response => {
-      //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+    }).catch(err => {
+      console.log(err); // à tester la première fois pour voir ce que retourne le serveur
       //alert("Vous n'avez posté aucun message !")
     });
   }
@@ -90,9 +102,9 @@ class NavigationPanel extends React.Component {
     });
   }
 
-  refresh_messages(max = 1000000, etat = false) {
-      //api.get(`/messages/${max}:${etat}`) //remettre celle ci
-      api.get("/messages/1000000:false")
+  refresh_messages(max = this.MAX_MSG_DATE, etat = this.only_friends) {
+      api.get(`/messages/${max}:${etat}`) //remettre celle ci
+      //api.get("/messages/1000000:true") // ONLY FRIENDS
       .then(response => {
         console.log(response); // à tester la première fois pour voir ce que retourne le serveur
         if (response.status == '200') {
@@ -213,9 +225,11 @@ class NavigationPanel extends React.Component {
 
       {
         isConnected && this.state.content == "messages" &&
+
         // eslint-disable-next-line react/jsx-pascal-case
         <div width="100" p={1} my={0.5}>
-          {this.refresh_messages()}
+          <SwitchOnlyFriends swt={(val)=>this.switch_change(val)} />
+          {this.refresh_messages(this.MAX_MSG_DATE, this.only_friends)}
           {this.messages.map((item, index) => <Message key={index} props={JSON.stringify(item)} />)}
         </div>
       }

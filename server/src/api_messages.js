@@ -1,6 +1,7 @@
 const express = require("express");
 const Messages = require("./entities/messages.js");
 const Users = require("./entities/users.js");
+const Friends = require("./entities/friends.js");
 
 const bodyParser = require('body-parser');
 const url = require('url');
@@ -20,8 +21,9 @@ function init(db_nosql, db) {
         next();
     });
 
-    const messages = new Messages.default(db_nosql);
+    const messages = new Messages.default(db_nosql,db);
     const users = new Users.default(db); //db ?
+    const friends = new Friends.default(db);
 
     //
     router
@@ -78,7 +80,7 @@ function init(db_nosql, db) {
                 console.log("req.query=",req.query) //test
                 let query = JSON.stringify(req.query)
                 const { max_time, friends_only } = query;
-    */
+                 */
                 let max_time = req.params.max
                 let friends_only = req.params.onlyfriends
                 console.log("max_time=", max_time, "  friends_only", friends_only) //test
@@ -103,10 +105,45 @@ function init(db_nosql, db) {
                 userid = req.session.userid /// voir si suffisant (quand on aura  mongoose  pour les sessions)
 
                 console.log('list messages: session id=', req.session.id, '  session.userid=', req.session.userid) // test
+                let friends_list = []
+                await friends.list_friends(userid).then((f)=>friends_list=f).catch((err)=>console.log("liste des friends introuvable !!!"))
+                console.log("ilah9ed ar dina !")
 
-                messages.list_all(max_time, friends_only,userid) //utiliser  x = await fonction... aulieu des .then 
-                    .then((msgs) => res.status(200).send(msgs)) //pas la peine de retourner l'id, le status suffit
-                    .catch((err) => res.status(500).send(err));
+                messages.list_all(max_time, friends_only,userid)
+                    .then((msgs)=>{
+                        
+                        if(friends_only ==":true"){
+                            try{
+                                let f_ids = []
+                                friends_list.forEach(element => f_ids.push(element.userid));
+                                console.log("f_ids= ", f_ids)
+                                let friends_msgs = []
+                                for (var i in msgs) {
+                                    console.log("============================================= !")
+                                    console.log("message: ", msgs[i])
+                                    console.log("______________________________________(((((((",f_ids.includes(msgs[i].user))
+                                    if(f_ids.includes(msgs[i].user)){
+                                        friends_msgs.push(msgs[i])
+                                    }
+                                    
+                                };
+                                
+                                res.status(200).send(friends_msgs) //renvoi la liste des friends
+                                return
+                            }
+                            catch(err) {
+                                console.log("--erreur dans friends only = :true")
+                                res.status(500).send(err)
+                            }
+                        
+
+                         
+                           
+                         }
+                         res.status(200).send(msgs) 
+                     })
+                     .catch((err) => res.status(501).send(err));
+                
             } catch (error) {
                 // Toute autre erreur
                 res.status(500).json({

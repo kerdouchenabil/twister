@@ -1,4 +1,4 @@
-const Friends = require("./entities/friends.js");
+const Friends = require("./friends.js");
 const { default: friends } = require("./friends.js");
 class Messages {
     constructor(db,db_sql) {
@@ -6,7 +6,7 @@ class Messages {
       this.db_sql = db_sql
       // creation de la table messages dans la BD mongodb
       //db.messages
-      const friends = new Friends.default(db);
+      const friends = new Friends.default(db_sql);
     }
     
 
@@ -61,7 +61,7 @@ class Messages {
 
       // TODO : if only_friends = true
       //
-      if (only_friends){
+      /*if (only_friends ==":true"){
         try{
           let now = new Date(Date.now())
           
@@ -75,10 +75,10 @@ class Messages {
               }else{
                 
                 try{
+                  
 
-                  await friends.list_friends(userid)
+                  let d = await friends.list_friends(userid)
                   .then((got) => {
-
                     let result = docs.filter(msg => $.each(got, function(i, obj) {
                       obj.userid == msg.user
                      }))
@@ -98,7 +98,7 @@ class Messages {
                   
                   
                 }catch{
-                  console.log("list messages error !!")
+                  console.log("list messages error !§!")
                 }
                 
               }
@@ -108,9 +108,9 @@ class Messages {
           console.log("----catch-----", e)
           return "list messages error !"
         }    
-      }
+      }*/
         
-      else{
+      
         try{
           let now = new Date(Date.now())
   
@@ -134,7 +134,7 @@ class Messages {
                   console.log(docs);
                   resolve(docs)
                 }catch{
-                  console.log("list messages error !!")
+                  console.log("list messages error !!!")
                 }
                 
               }
@@ -144,7 +144,7 @@ class Messages {
           console.log("----catch-----", e)
           return "list messages error !"
         }
-      }
+      
       //if only friends = false
 
     }
