@@ -38,24 +38,28 @@ class NavigationPanel extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { "content": "messages", search_result:[], friends:[], my_messages : [] }
+    this.state = { "content": "messages", search_result:[], friends:[], my_messages: [], messages: [], only_friends: false, other_user_data: {} }
     //
+    //this.messages = []
     this.user_data = {}//this.get_user_data()
-    this.only_friends = true
-    this.MAX_MSG_DATE = 100000000000
+    //this.only_friends = false
+    this.MAX_MSG_DATE = 1000000000
     this.refresh_messages(this.MAX_MSG_DATE, this.only_friends)
     
-    this.messages = []
     /*
     this.friends = []
     this.my_messages = []
     */
   }
 
+  set_other_user_data(data){
+    this.setState({"content": "UserProfil", other_user_data:data})
+  }
+
   switch_change(val){
-    this.only_friends = val
-    this.refresh_messages()
-    console.log("onlyyyyyy = ", this.only_friends)
+    this.setState({only_friends: val})
+    //this.refresh_messages(this.MAX_MSG_DATE, val)
+    this.show_messages()
   }
 
   set_search_result(data){
@@ -83,6 +87,13 @@ class NavigationPanel extends React.Component {
     });
   }
 
+  show_user_profil() {
+    //this.refresh_friends();
+    this.setState({
+      content: "UserProfil",
+    });
+  }
+
   show_post_message() {
     this.setState({
       content: "post_message",
@@ -103,14 +114,14 @@ class NavigationPanel extends React.Component {
     });
   }
 
-  refresh_messages(max = this.MAX_MSG_DATE, etat = this.only_friends) {
+  refresh_messages(max = this.MAX_MSG_DATE, etat = this.state.only_friends) {
       api.get(`/messages/${max}:${etat}`) //remettre celle ci
       //api.get("/messages/1000000:true") // ONLY FRIENDS
       .then(response => {
         console.log(response); // à tester la première fois pour voir ce que retourne le serveur
         if (response.status == '200') {
           
-          this.messages = response.data //liste des messages
+          this.setState({messages: response.data}) //liste des messages
           //console.log("------------->", this.messages)
         }
       }).catch(response => {
@@ -211,7 +222,7 @@ class NavigationPanel extends React.Component {
         this.state.content == "search_result" &&
         <div>
           <h3>RESULTAT DE LA RECHERCHE</h3>
-          {this.state.search_result.map((item, index) => <User key={index} props={JSON.stringify(item)} refresh={()=>this.show_friends()}/>)}
+          {this.state.search_result.map((item, index) => <User key={index} props={JSON.stringify(item)} set_other_user_data={(data)=>this.set_other_user_data(data)} />)}
         </div>
       }
 
@@ -229,8 +240,7 @@ class NavigationPanel extends React.Component {
         // eslint-disable-next-line react/jsx-pascal-case
         <div width="100" p={1} my={0.5}>
           <SwitchOnlyFriends swt={(val)=>this.switch_change(val)} />
-          {this.refresh_messages(this.MAX_MSG_DATE, this.only_friends)}
-          {this.messages.map((item, index) => <Message key={index} props={JSON.stringify(item)} />)}
+          {this.state.messages.map((item, index) => <Message key={index} props={JSON.stringify(item)} />)}
         </div>
       }
 
@@ -252,10 +262,10 @@ class NavigationPanel extends React.Component {
       }
 
       {
-        isConnected && this.state.content == "xxxMyProfil" &&
+        isConnected && this.state.content == "UserProfil" &&
         // eslint-disable-next-line react/jsx-pascal-case
         <div width="100" p={1} my={0.5}>
-          { <UserProfil props={this.state.user_data} /*refresh={(data)=>this.setState(data)}*/ refresh={()=>this.refresh_my_messages()} />}
+          { <UserProfil props={this.state.other_user_data} /*refresh={(data)=>this.setState(data)}*/ refresh={()=>this.show_user_profil()} />}
         </div>
       }
 

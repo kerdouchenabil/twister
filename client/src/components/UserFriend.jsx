@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function User({ props, set_other_user_data }) {
+export default function UserFriend({props, set_other_user_data}) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -51,30 +51,30 @@ export default function User({ props, set_other_user_data }) {
     setExpanded(!expanded);
   };
 
-  const handleSubmit = (event) => {
+ const handleSubmit = (event) =>{
 
+  event.preventDefault();
+
+  set_other_user_data(JSON.parse(props))
+    
+  /*
     event.preventDefault();
-    console.log("USER.jsx: set_other_user_data=", JSON.parse(props))
-    set_other_user_data(JSON.parse(props))
+    const api = axios.create({
+        baseURL : '/api/',
+        timeout : 1000,
+        headers : {'X-Custom-Header' : 'foobar'}
+        });
+    api.delete('/friends/'+JSON.parse(props).userid) 
+      .then(response => {
+        console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+        if(response.status == 200){
+          console.log(response);
+          affiche_supprime = true
+          refresh(); /////////////////  ne marche pas !
+        }
 
-    /*
-      event.preventDefault();
-      const api = axios.create({
-          baseURL : '/api/',
-          timeout : 1000,
-          headers : {'X-Custom-Header' : 'foobar'}
-          });
-      api.delete('/friends/'+JSON.parse(props).userid) 
-        .then(response => {
-          console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-          if(response.status == 200){
-            console.log(response);
-            affiche_supprime = true
-            refresh(); /////////////////  ne marche pas !
-          }
-  
-         });
-    */
+       });
+  */
   }
 
   return (
@@ -83,29 +83,17 @@ export default function User({ props, set_other_user_data }) {
         avatar={
           <div>
             <Avatar aria-label="recipe" className={classes.avatar}>
-              {JSON.parse(props).userid}
+            {JSON.parse(props).userid}
             </Avatar>
-            <h2>{JSON.parse(props).firstname + " " + JSON.parse(props).lastname}</h2>
+            <h2>{JSON.parse(props).firstname+" "+ JSON.parse(props).lastname}</h2>
             <h4>{"login: " + JSON.parse(props).login}</h4>
           </div>
         }
-
+        
         title=""
         subheader=""
       />
-      <CardActions disableSpacing>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit} ///
-        >
-          Show profil
-          </Button>
-
-      </CardActions>
-
+      
     </Card>
   );
 }

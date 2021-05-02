@@ -198,11 +198,17 @@ function init(db_nosql, db) {
                 let user = req.params.user
                 let max_time = req.params.max
 
+                //enlever les ":" au debut
+                const words = max_time.split(':');
+                console.log("word 0  ", words[0]);
+                console.log("word 1  ", words[1]);
+                max_time = words[1]
+
                 if(!max_time){
                     max_time = 10000000000
                 }
 
-                console.log("max_time=", max_time, "  user=", user) //test
+                console.log("api_message: max_time=", max_time, "  user=", user) //test
 
                 // si pas de user 
                 if (!user) {
@@ -240,7 +246,7 @@ function init(db_nosql, db) {
                 }
                 
 
-                console.log('list messages: session id=', req.session.id, '  session.userid=', req.session.userid) // test
+                console.log('api_messages: list messages: session id=', req.session.id, '  session.userid=', req.session.userid) // test
 
                 messages.list_of(userid ,  max_time ) //utiliser  x = await fonction... aulieu des .then 
                     .then((msgs) => res.status(200).send(msgs)) //pas la peine de retourner l'id, le status suffit

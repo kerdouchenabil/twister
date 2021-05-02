@@ -11,6 +11,7 @@ import Message from './Message';
 import Friend from "./Friend"
 import MyMessage from "./MyMessage"
 import User from "./User"
+import UserFriend from "./UserFriend"
 
 import axios from 'axios';
 
@@ -21,25 +22,27 @@ const api = axios.create({
 });
 
 
-class MyProfil extends React.Component {
+class UserProfil extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-        user_data: this.props.user_data,
+        user_data: this.props.props,
         my_messages: [],
         friends: []
     }   
 
+    console.log("-->USERPROFIL: this.props.userid= ", this.state.user_data.userid)
     //importation du contenu depuis la bd
-    this.refresh_my_messages(1)//(this.state.user_data.userid)
-    this.refresh_friends(1)//(this.state.user_data.userid)
+    this.refresh_my_messages(this.state.user_data.userid)//(this.state.user_data.userid)
+    this.refresh_friends(this.state.user_data.userid)//(this.state.user_data.userid)
 
   }
 
 
-  refresh_my_messages(userid = 0){
+  refresh_my_messages(userid = this.state.user_data.userid){
+    console.log("user_profil: refresh_my_messages: ", this.state.user_data.userid)
     api.get("/messages/of/"+userid+":10000000000") // user_id=0 pour mes messages (session)
     .then(response => {
       console.log(response); // à tester la première fois pour voir ce que retourne le serveur
@@ -53,7 +56,7 @@ class MyProfil extends React.Component {
   }
 
 
-  refresh_friends(userid = 0){
+  refresh_friends(userid = this.state.user_data.userid){
     api.get("/friends/"+userid) 
       .then(response => {
         console.log(response); // à tester la première fois pour voir ce que retourne le serveur
@@ -80,7 +83,7 @@ class MyProfil extends React.Component {
                 <h2> Messages </h2>
                 {
                   <div width="100" p={1} my={0.5}>
-                    {this.state.my_messages.map((item, index) => <MyMessage key={index} props={JSON.stringify(item)} refresh={()=>this.refresh_my_messages()} />)}
+                    {this.state.my_messages.map((item, index) => <Message key={index} props={JSON.stringify(item)} refresh={()=>this.refresh_my_messages()} />)}
                   </div>
                 }
                 
@@ -95,7 +98,7 @@ class MyProfil extends React.Component {
                 <h2> Amis </h2>
                 {
                   <div width="100" p={1} my={0.5}>
-                    {this.state.friends.map((item, index) => <User key={index} props={JSON.stringify(item)} refresh={()=>this.refresh_friends()} />)}
+                    {this.state.friends.map((item, index) => <UserFriend key={index} props={JSON.stringify(item)} refresh={()=>this.refresh_friends()} />)}
                   </div>
                 }
                 
@@ -107,4 +110,4 @@ class MyProfil extends React.Component {
 }
 
 
-export default MyProfil
+export default UserProfil

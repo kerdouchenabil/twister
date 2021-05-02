@@ -126,53 +126,17 @@ function init(db) {
 
         })
 
-
-        //----------------------- list friends ----------------------
-        /*
-        .get(async (req,res)=>{
-            try {
-                const id_from = req.params.user_id
-                if(! id_from ) {
-                    res.status(400).json({message:"list friends: Missing fields"});
-                    return;
-                }
-
-                // utilisateur connecté ?
-                if (! req.session.userid ) {
-                    res.status(401).json({message:"list friends: utilisateur non authentifié"});
-                    return;
-                }
-
-                // user exists ?
-                try{
-                    if(! await users.exists_id(id_from)) { 
-                        res.status(400).json({
-                            //status: 400, //duplication !
-                            message: "list friends: user not found"
-                        });
-                        return;
-                    }
-                }catch(e){
-                    res.status(500).send("user not found !")
-                    return;
-                }
-
-                await friends.list_friends(id_from)
-                    .then((got) => res.status(200).send(got) )
-                    .catch((err) => res.status(500).send(err))  
-            }catch (error) {
-                // Toute autre erreur
-                res.status(500).json({
-                    status: 500,
-                    message: "erreur interne",
-                    details: (error || "Erreur inconnue").toString()
-                })
-            }
-        });*/
         
+        //--------------------- list friends of a user --------------------------//
+        router.route("/friends/:user_id(\\d+)")
         .get(async (req,res)=>{
             try {
-                const id_from = req.session.userid
+                let id_from = req.params.user_id
+                // si id = 0 je renvoi le mien
+                if(id_from == 0){
+                    id_from = req.session.userid
+                }
+                
                 if(! id_from ) {
                     res.status(400).json({message:"list friends: Missing fields"});
                     return;

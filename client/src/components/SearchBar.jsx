@@ -23,7 +23,7 @@ class SearchBar extends React.Component {
 
   changeText = event => {
     const val = event.currentTarget.value;
-    const val1 = event.currentTarget.type
+    //const val1 = event.currentTarget.type
     this.setState({text : val})
   }
 
