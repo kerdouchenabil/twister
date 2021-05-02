@@ -1,18 +1,8 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import TextField from '@material-ui/core/TextField';
 import '../css/MainPage.css';
-import SearchIcon from '@material-ui/icons/Search';
-import Input from '@material-ui/core/Input';
 import Message from './Message';
-import Friend from "./Friend"
-import MyMessage from "./MyMessage"
-import User from "./User"
 import UserFriend from "./UserFriend"
-
 import axios from 'axios';
 
 const api = axios.create({
@@ -20,7 +10,6 @@ const api = axios.create({
   timeout: 1000,
   headers: { 'X-Custom-Header': 'foobar' }
 });
-
 
 class UserProfil extends React.Component {
 
@@ -38,7 +27,6 @@ class UserProfil extends React.Component {
     this.refresh_friends(this.state.user_data.userid)//(this.state.user_data.userid)
   }
 
-
   refresh_my_messages(userid = this.state.user_data.userid) {
     console.log("user_profil: refresh_my_messages: ", this.state.user_data.userid)
     api.get("/messages/of/" + userid + ":10000000000") // user_id=0 pour mes messages (session)
@@ -52,7 +40,6 @@ class UserProfil extends React.Component {
         alert("Vous n'avez posté aucun message !")
       });
   }
-
 
   refresh_friends(userid = this.state.user_data.userid) {
     api.get("/friends/" + userid)
@@ -68,7 +55,6 @@ class UserProfil extends React.Component {
         //alert("pas de friends à récuperer !")
       });
   }
-
 
   handleSubmit = (event) => {
 
@@ -87,26 +73,21 @@ class UserProfil extends React.Component {
           alert(this.state.user_data.firstname + " " + this.state.user_data.lastname + "  Followed")
         }
       });
-
   }
 
 
   render() {
-    //const { props } = this.props;
-
     return (
-
       <div>
 
         <div /*className="header_container_small"*/ >
-
           <div></div>
 
           <div className="nom_user">
             <h1>{this.state.user_data.firstname + " " + this.state.user_data.lastname}</h1>
           </div>
-          
-          { !this.state.followed &&
+
+          {!this.state.followed &&
             <div>
               <Button
                 type="submit"
@@ -120,7 +101,6 @@ class UserProfil extends React.Component {
             </Button>
             </div>
           }
-
 
           <div></div>
 
@@ -157,8 +137,6 @@ class UserProfil extends React.Component {
       </div>
     );
   }
-
 }
-
 
 export default UserProfil

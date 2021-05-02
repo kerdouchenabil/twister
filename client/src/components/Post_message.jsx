@@ -3,12 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import TextField from '@material-ui/core/TextField';
 import '../css/MainPage.css';
 import FileBase64 from 'react-file-base64';
 import axios from 'axios';
-
-
 
 class Post_message extends React.Component {
 
@@ -19,9 +16,7 @@ class Post_message extends React.Component {
       image: '',
       data: {}
     }
-
     this.handle_image = this.handle_image.bind(this);
-
   }
 
   handle_image = (image) => {
@@ -32,7 +27,6 @@ class Post_message extends React.Component {
     console.log(JSON.stringify(this.state))
   }
 
-
   changeText = event => {
     const val = event.currentTarget.value;
     const val1 = event.currentTarget.type
@@ -41,7 +35,6 @@ class Post_message extends React.Component {
   changeFile = event => {
     const val = event.currentTarget.value;
     this.setState({ image: val })
-
   }
 
   handleSubmit = (event) => {
@@ -60,9 +53,7 @@ class Post_message extends React.Component {
         }
       }).catch(response => {
         console.log(response.status); // à tester la première fois pour voir ce que retourne le serveur
-
       });
-
   }
 
   /// a supprimer plus tard
@@ -81,7 +72,6 @@ class Post_message extends React.Component {
       display: 'none',
     },
   }));
-
 
   render() {
     const { login } = this.props;
@@ -136,12 +126,9 @@ class Post_message extends React.Component {
         >
           Poster
           </Button>
-
       </div>
-
     );
   }
 }
-
 
 export default Post_message;

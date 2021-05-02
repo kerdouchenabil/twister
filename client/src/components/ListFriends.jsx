@@ -1,6 +1,5 @@
 import React from 'react'
 import '../css/MainPage.css';
-import axios from 'axios';
 import Friend from "./Friend"
 
 /*
@@ -19,24 +18,24 @@ class ListFriends extends React.Component {
     this.friends = []
   }
 
-/*
-  refresh_friends(id) {
-  
+  /*
+    refresh_friends(id) {
     
-      api.get("friends/1")
-      .then(response => {
-        console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-        if (response.status == '200') {
-          this.friends = response.data //liste des amis
-
-        }
-      }).catch(response => {
-        //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-        alert("pas de friends à récuperer !")
-      });
-
-  }
-*/
+      
+        api.get("friends/1")
+        .then(response => {
+          console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+          if (response.status == '200') {
+            this.friends = response.data //liste des amis
+  
+          }
+        }).catch(response => {
+          //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
+          alert("pas de friends à récuperer !")
+        });
+  
+    }
+  */
   render() {
     const { userid } = this.props;
 

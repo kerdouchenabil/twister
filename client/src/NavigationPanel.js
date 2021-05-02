@@ -3,13 +3,7 @@ import Login from './Login'
 import Logout from './Logout'
 import Button from '@material-ui/core/Button';
 import Message from './components/Message';
-
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
-import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp';
 import AppBar from './components/AppBar'
-import Test from './components/Test'
 //import List_friends from "./components/List_friends"
 import Friend from "./components/Friend"
 import User from "./components/User"
@@ -17,15 +11,9 @@ import Post_message from "./components/Post_message"
 import MyMessage from "./components/MyMessage"
 import MyProfil from "./components/MyProfil"
 import UserProfil from "./components/UserProfil"
-
 import './css/MainPage.css';
-import Input from '@material-ui/core/Input';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
 import SearchBar from "./components/SearchBar"
 import SwitchOnlyFriends from "./components/SwitchOnlyFriends"
-
-
 import axios from 'axios';
 
 const api = axios.create({
@@ -39,13 +27,11 @@ class NavigationPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = { "content": "messages", search_result:[], friends:[], my_messages: [], messages: [], only_friends: false, other_user_data: {} }
-    //
     //this.messages = []
     this.user_data = {}//this.get_user_data()
     //this.only_friends = false
     this.MAX_MSG_DATE = 1000000000
     this.refresh_messages(this.MAX_MSG_DATE, this.only_friends)
-    
     /*
     this.friends = []
     this.my_messages = []
@@ -128,7 +114,6 @@ class NavigationPanel extends React.Component {
         //console.log(response); // à tester la première fois pour voir ce que retourne le serveur
         //alert("pas de messages à récuperer !")
       });
-
   }
 
   refresh_friends(){

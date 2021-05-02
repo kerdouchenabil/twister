@@ -12,18 +12,15 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import moment from 'moment'
-import DeleteIcon from '@material-ui/icons/Delete';
 import CommentIcon from '@material-ui/icons/Comment';
-
 import { sizing } from '@material-ui/system';
 import axios from 'axios';
 const useStyles = makeStyles((theme) => ({
   root: {
-    width:"90%",
+    width: "90%",
     maxWidth: 1200, //'auto'
     minWidth: 800,
     //maxHeight: 200 //prob
@@ -48,9 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Message({props}) {
-
-  const { delete_message, show_profil } = props;
+export default function Message({ props }) {
 
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
@@ -58,25 +53,25 @@ export default function Message({props}) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  const handleSubmit = (event) =>{
-        
+  const handleSubmit = (event) => {
+
     event.preventDefault();
     const api = axios.create({
-        baseURL : '/api/',
-        timeout : 1000,
-        headers : {'X-Custom-Header' : 'foobar'}
-        });
-    api.put('/messages/like/'+JSON.parse(props)._id) 
+      baseURL: '/api/',
+      timeout: 1000,
+      headers: { 'X-Custom-Header': 'foobar' }
+    });
+    api.put('/messages/like/' + JSON.parse(props)._id)
       .then(response => {
         console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-        if(response.status == 200){
+        if (response.status == 200) {
           console.log(response);
-          
+
           alert("liked !")
-          //refresh(); /////////////////  ne marche pas !
+          //refresh(); ///
         }
 
-       });
+      });
 
   }
   return (
@@ -86,19 +81,19 @@ export default function Message({props}) {
         avatar={
           <div>
             <Avatar aria-label="recipe" className={classes.avatar}>
-            {JSON.parse(props).user}
+              {JSON.parse(props).user}
             </Avatar>
-            <h2>{JSON.parse(props).firstname+" "+ JSON.parse(props).lastname}</h2>
+            <h2>{JSON.parse(props).firstname + " " + JSON.parse(props).lastname}</h2>
           </div>
-          
-          
+
+
         }
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        
+
         title={JSON.parse(props).text}//{props.title}
         subheader={moment(JSON.parse(props).date).fromNow()} //regler
       />
@@ -118,7 +113,7 @@ export default function Message({props}) {
           <FavoriteIcon />
         </IconButton>
 
-        <IconButton aria-label="comment" onClick={() => { alert('type your comment !') ; /* comment_message() ; show_profil() */ }}>
+        <IconButton aria-label="comment" onClick={() => { alert('type your comment !'); /* comment_message() ; show_profil() */ }}>
           <CommentIcon />
         </IconButton>
 

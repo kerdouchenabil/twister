@@ -123,10 +123,8 @@ function init(db) {
                     details: (error || "Erreur inconnue").toString()
                 })
             }
-
         })
-
-        
+  
         //--------------------- list friends of a user --------------------------//
         router.route("/friends/:user_id(\\d+)")
         .get(async (req,res)=>{
@@ -175,12 +173,7 @@ function init(db) {
             }
         });
 
-
-
-
-        
-
-
     return router;
 }
+
 exports.default = init;

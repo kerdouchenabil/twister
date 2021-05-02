@@ -1,6 +1,5 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -9,19 +8,13 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import DehazeTwoToneIcon from '@material-ui/icons/DehazeTwoTone';
 import SupervisorAccountSharpIcon from '@material-ui/icons/SupervisorAccountSharp';
-import Avatar from '@material-ui/core/Avatar';
-import SearchIcon from '@material-ui/icons/Search';
-
-
-import ListFriends from "./ListFriends"
 
 const StyledMenu = withStyles({
   paper: {
     border: '1px solid #d3d4d5',
-    
+
   },
 })((props) => (
   <Menu
@@ -69,20 +62,9 @@ export default function CustomizedMenus(props) {
     <div>
       <label htmlFor="icon-button-file">
         <IconButton color="primary" aria-label="Menu" component="span" onClick={handleClick}>
-          <DehazeTwoToneIcon style={{ fontSize: 50 }}/>
+          <DehazeTwoToneIcon style={{ fontSize: 50 }} />
         </IconButton>
       </label>
-      {/*
-      <Button
-        aria-controls="customized-menu"
-        aria-haspopup="true"
-        variant="contained"
-        color="primary"
-        onClick={handleClick}
-      >
-        Open Menu
-      </Button>
-      */}
 
 
       <StyledMenu
@@ -91,7 +73,7 @@ export default function CustomizedMenus(props) {
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
-      > 
+      >
         <StyledMenuItem onClick={() => { show_profil() }}>
           <ListItemIcon>
             <InboxIcon fontSize="small" />
@@ -106,14 +88,14 @@ export default function CustomizedMenus(props) {
           <ListItemText primary="Post" />
         </StyledMenuItem>
 
-        <StyledMenuItem onClick={() => {show_messages()}}>
+        <StyledMenuItem onClick={() => { show_messages() }}>
           <ListItemIcon>
             <DraftsIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Actualité" />
         </StyledMenuItem >
 
-        <StyledMenuItem onClick={() =>  {show_friends()} }>
+        <StyledMenuItem onClick={() => { show_friends() }}>
           <ListItemIcon>
             <SupervisorAccountSharpIcon fontSize="small" />
           </ListItemIcon>

@@ -15,7 +15,7 @@ export default function SwitchLabels(swt) {
 
   return (
     <FormGroup row>
-      
+
       <FormControlLabel
         control={
           <Switch

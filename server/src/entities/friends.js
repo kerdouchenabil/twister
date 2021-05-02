@@ -2,12 +2,10 @@ class Friends {
     constructor(db) {
       this.db = db
       // creation de la table users dans la BD
-      
       this.db.exec(`CREATE TABLE IF NOT EXISTS friends (id_from VARCHAR(512) NOT NULL, id_to VARCHAR(512) NOT NULL, PRIMARY KEY (id_from, id_to) );`)
-
     }
 
-    add(id_from, id_to) { //async ? 
+    add(id_from, id_to) { 
         let _this = this
         return new Promise((resolve, reject) => {
           const st = _this.db.prepare("INSERT INTO friends VALUES (?,?)")
@@ -22,7 +20,6 @@ class Friends {
       }
 
       async delete(id_from,id_to){
-
         let _this = this 
 
         //verifier dabord si friendship exists
@@ -36,13 +33,6 @@ class Friends {
           const st = _this.db.prepare("DELETE FROM friends where id_from = ? and id_to = ?")
           st.run([id_from, id_to],function(err, res){
             resolve(true)
-            /*
-            if(res){
-              resolve(true)
-            }else{
-              reject(err)
-            }
-            */
           })
         });
       }
@@ -72,16 +62,12 @@ class Friends {
             if(err){
               reject(err)
             }else{
-              /* //affichage test
-              console.log("list friends= ", res)
-              res.forEach(element => console.log(element));
-              */
               resolve(res)
             }
           })
 
         });
       }
-
 }
+
 exports.default = Friends;
