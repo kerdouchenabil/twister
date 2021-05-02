@@ -3,14 +3,15 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-export default function SwitchLabels(swt) {
+export default function SwitchLabels({swt, refresh}) {
   const [state, setState] = React.useState({
     checkedB: false,
   });
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
-    swt.swt(state.checkedB)
+    swt(state.checkedB)
+    refresh()
   };
 
   return (

@@ -15,9 +15,10 @@ class Logout extends React.Component {
       .then(response => {
         if (response.status == 201) {
           this.props.logout()
-          alert("déconnexion réussie")
+          //alert("déconnexion réussie")
         }
-      });
+      })
+      .catch(err=>console.log(err));
   }
   render() {
     return <label htmlFor="icon-button-file">

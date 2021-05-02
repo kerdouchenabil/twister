@@ -50,9 +50,8 @@ class UserProfil extends React.Component {
           this.setState({ friends: response.data })  //liste des messages
           //this.showfriends();
         }
-      }).catch(response => {
-        console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-        //alert("pas de friends à récuperer !")
+      }).catch(err => {
+        console.log(err); // à tester la première fois pour voir ce que retourne le serveur
       });
   }
 
@@ -72,6 +71,9 @@ class UserProfil extends React.Component {
           this.setState({ followed: true })
           alert(this.state.user_data.firstname + " " + this.state.user_data.lastname + "  Followed")
         }
+      })
+      .catch(err => {
+        alert("You can not follow this user again !")
       });
   }
 

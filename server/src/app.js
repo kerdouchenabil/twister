@@ -23,13 +23,13 @@ const session = require("express-session");
 //app.set('trust proxy', 1) //  si HTTPS //
 
 api_1 = require("./api_users.js");
-api_2 = require("./api_friends.js");////////////
+api_2 = require("./api_friends.js");
 
 //stockage sessions dans bd serveur
 //var mongoose = require('mongoose'); //TODO
 
 app.use(session({
-    secret: "abcdefghijklmnopqrstuvwxyz0123456789", // a changer
+    secret: "abcdefghijklmnopqrstuvwxyz0123456789", //////// a changer si déployé 
     //cookie: { maxAge: 2628000000 },
     resave: false,
     //saveUninitialized: false,
