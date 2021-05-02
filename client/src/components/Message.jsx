@@ -12,15 +12,18 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import moment from 'moment'
+import DeleteIcon from '@material-ui/icons/Delete';
 import CommentIcon from '@material-ui/icons/Comment';
+
 import { sizing } from '@material-ui/system';
 import axios from 'axios';
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "90%",
+    width:"90%",
     maxWidth: 1200, //'auto'
     minWidth: 800,
     //maxHeight: 200 //prob
@@ -45,33 +48,91 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Message({ props }) {
+export default function Message({props,usr}) {
+
+  let user_data = {};
+
+  const { delete_message, show_profil } = props;
 
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [state, setState] = React.useState({
+    text: "",
+  });
+  //let usrr = get_user_data()
+
+  let changeText = event => {
+    const val = event.currentTarget.value;
+    const val1 = event.currentTarget.type
+    setState({ ...state, text: val })
+  }
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  const handleSubmit = (event) => {
-
+  const handleSubmit = (event) =>{
+        
     event.preventDefault();
     const api = axios.create({
-      baseURL: '/api/',
-      timeout: 1000,
-      headers: { 'X-Custom-Header': 'foobar' }
-    });
-    api.put('/messages/like/' + JSON.parse(props)._id)
+        baseURL : '/api/',
+        timeout : 1000,
+        headers : {'X-Custom-Header' : 'foobar'}
+        });
+    api.put('/messages/like/'+JSON.parse(props)._id) 
       .then(response => {
         console.log(response); // à tester la première fois pour voir ce que retourne le serveur
-        if (response.status == 200) {
+        if(response.status == 200){
           console.log(response);
-
+          
           alert("liked !")
-          //refresh(); ///
+          //refresh(); /////////////////  ne marche pas !
         }
 
+       });
+
+  }
+
+  const  get_user_data = () =>{
+
+    const api = axios.create({
+      baseURL : '/api/',
+      timeout : 1000,
+      headers : {'X-Custom-Header' : 'foobar'}
       });
+    api.get("/user/0") 
+      .then(response2 => {
+        console.log(response2); // à tester la première fois pour voir ce que retourne le serveur
+        if (response2.status == '200') {
+          
+          user_data = response2.data //liste des messages
+          console.log("get_user_data--> ", user_data)
+          return response2.data // a verifier
+        }
+      }).catch(response2 => {
+        console.log("get_user_data catch: ", response2); // à tester la première fois pour voir ce que retourne le serveur
+        //alert("pas de user_data à récuperer !")
+      });
+  }
+  const handleSubmitcomment = (event) =>{
+        
+    event.preventDefault();
+    const api = axios.create({
+        baseURL : '/api/',
+        timeout : 1000,
+        headers : {'X-Custom-Header' : 'foobar'}
+        });
+    
+    api.put('/messages/comment/'+JSON.parse(props)._id , {"user": usr.userid,"firstname":usr.firstname ,"lastname": usr.lastname, "text":state.text },) 
+      .then(response => {
+         // à tester la première fois pour voir ce que retourne le serveur
+         
+        if(response.status == 200){
+          
+          alert("commented !")
+          //refresh(); /////////////////  ne marche pas !
+        }
+
+       });
 
   }
   return (
@@ -81,19 +142,19 @@ export default function Message({ props }) {
         avatar={
           <div>
             <Avatar aria-label="recipe" className={classes.avatar}>
-              {JSON.parse(props).user}
+            {JSON.parse(props).user}
             </Avatar>
-            <h2>{JSON.parse(props).firstname + " " + JSON.parse(props).lastname}</h2>
+            <h2>{JSON.parse(props).firstname+" "+ JSON.parse(props).lastname}</h2>
           </div>
-
-
+          
+          
         }
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-
+        
         title={JSON.parse(props).text}//{props.title}
         subheader={moment(JSON.parse(props).date).fromNow()} //regler
       />
@@ -112,8 +173,14 @@ export default function Message({ props }) {
         <IconButton aria-label="like" onClick={handleSubmit}>
           <FavoriteIcon />
         </IconButton>
+        <h3>Réagissez au poste  </h3>
 
-        <IconButton aria-label="comment" onClick={() => { alert('type your comment !'); /* comment_message() ; show_profil() */ }}>
+        <textarea id="story" name="story"
+        rows="5" cols="33" value={state.text}
+        onChange={changeText}>
+
+        </textarea>
+        <IconButton aria-label="comment" onClick={handleSubmitcomment /* comment_message() ; show_profil() */ }>
           <CommentIcon />
         </IconButton>
 
@@ -130,29 +197,11 @@ export default function Message({ props }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-            Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-            minutes.
-          </Typography>
-          <Typography paragraph>
-            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-            heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
-            browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
-            and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
-            pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
-            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-          </Typography>
-          <Typography paragraph>
-            Add rice and stir very gently to distribute. Top with artichokes and peppers, and cook
-            without stirring, until most of the liquid is absorbed, 15 to 18 minutes. Reduce heat to
-            medium-low, add reserved shrimp and mussels, tucking them down into the rice, and cook
-            again without stirring, until mussels have opened and rice is just tender, 5 to 7
-            minutes more. (Discard any mussels that don’t open.)
-          </Typography>
-          <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then serve.
-          </Typography>
+
+        {JSON.parse(props).comments.map((item, index) => <Typography paragraph> <h4>{item.firstname+" "+item.lastname}</h4>  {item.text} </Typography>)}
+
+          <Typography paragraph>  </Typography>
+          
         </CardContent>
       </Collapse>
     </Card>

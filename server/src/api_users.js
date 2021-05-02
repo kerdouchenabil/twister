@@ -99,8 +99,14 @@ function init(db) {
     router
         .route("/user/:user_id(\\d+)")
         .get(async (req, res) => {
+
             try {
-                const user = await users.get(req.params.user_id);
+                let id = req.params.user_id
+                if(req.params.user_id == 0 ){
+                    id = req.session.userid
+                }
+                const user = await users.get(id);
+                
                 if (!user)
                     res.sendStatus(404);
                 else

@@ -276,6 +276,35 @@ class Messages {
       return "delete messaage error "
     }
   }
+  async comment(id_msg,msg){
+    try{
+        let _this = this
+        return new Promise((resolve,reject)=> {
+          try{
+            _this.db.findOne({ _id: id_msg }, function (err, doc) {
+              if (err) {
+  
+                reject(err)
+  
+              }
+  
+              else {
+                _this.db.update({ _id: id_msg }, { $push: { comments: msg } })
+  
+                resolve("commented")
+              }
+
+             })
+        }catch(e){
+          reject(e.message)
+          return;
+          }
+        });
+    }catch(e){
+      reject(e.message)
+          return;
+    }
+  }
 
 }
 
